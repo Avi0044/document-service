@@ -1,20 +1,22 @@
-# Getting Started
+# Document-Service Project
 
-### Reference Documentation
-For further reference, please consider the following sections:
+Document Generator Service allows you to easily generate documents i.e pdf, zip.
+It reduces the development and support costs by enabling your users to create and manage their document templates.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.6.7/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.6.7/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+## Packaging and running the application
 
-### Guides
-The following guides illustrate how to use some features concretely:
+The application can be packaged using:
 
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+```shell script
+./mvnw clean package
+```
 
+It produces the `document-service-*.jar` file in the `target/` directory.
+
+If you want to package it without running unit test cases, execute the following command:
+
+```shell script
+./mvnw clean package -Dmaven.test.skip=true
+```
+
+The application is now runnable using `java -jar /target/document-service-*.jar`.

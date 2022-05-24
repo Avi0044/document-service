@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <property name="basePath">/var/log/aeps/document</property>
+    </Properties>
+    <Appenders>
+        <!--<Console name="LogInJSON" target="SYSTEM_OUT">
+            <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json"/>
+        </Console>-->
+
+        <RollingFile name="fileApp"
+                     fileName="${basePath}/document.log"
+                     filePattern="${basePath}/$${date:yyyy-MM}/receipt-%d{MM-dd-yyyy}-%i.log.gz">
+            <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="in.nbt" level="info" additivity="false">
+            <AppenderRef ref="fileApp"/>
+            <AppenderRef ref="LogInJSON"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="fileApp"/>
+            <AppenderRef ref="LogInJSON"/>
+        </Root>
+
+    </Loggers>
+</Configuration>

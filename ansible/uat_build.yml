@@ -1,0 +1,105 @@
+---
+- name: Pre deployment steps
+  import_playbook: pre-uat-build.yml
+
+- name: jenkins to UAT transfer
+  hosts: dc-server
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Setting timestamp
+      set_fact:
+        timestamp: '{{hostvars["jhost"]["timestamp"]}}'
+
+    - name: Set directories vars
+      set_fact:
+        backupDir: '/tmp/backup/{{hostvars["jhost"]["buildNumber"]}}/{{timestamp}}/{{appName}}'
+        deploymentDir: "{{appPath}}/{{appName}}"
+        downloadDir: '/tmp/download/{{hostvars["jhost"]["buildNumber"]}}/{{timestamp}}/{{appName}}'
+        systemdServiceDir: "/tmp/download/{{appName}}"
+
+    - name: Create Backup directory if not exists
+      file:
+        path: "{{backupDir}}"
+        state: directory
+        mode: '0755'
+
+    - name: Create download directory if not exists
+      file:
+        path: '{{downloadDir}}'
+        state: directory
+        mode: '0755'
+
+    - name: Copy service template to tmp location
+      command: 'rsync {{systemdServiceDir}}/{{appName}}.service ubuntu@{{hostvars["aepshost"]["ansible_host"]}}:{{downloadDir}}'
+      delegate_to: jhost
+
+    - name: Copy service template to location
+      become: yes
+      become_user: root
+      command: "cp {{downloadDir}}/{{appName}}.service /etc/systemd/system/"
+
+    - name: Enable service
+      become: yes
+      become_user: root
+      systemd:
+        name: '{{appName}}'
+        enabled: yes
+
+    - name: Copy jar from jump host
+      command: 'rsync {{downloadDir}}/{{appName}}.jar ubuntu@{{hostvars["aepshost"]["ansible_host"]}}:{{downloadDir}}'
+      delegate_to: jhost
+
+    - name: Stop {{appName}} Service
+      become: yes
+      become_user: root
+      script:
+        cmd: '{{workspace}}/ansible/scripts/{{appName}}/stop.sh'
+      register: stop_status
+    - debug: msg={{stop_status.stdout_lines}}
+
+    - name: Check {{appName}} service has Stopped
+      script:
+        cmd: '{{workspace}}/ansible/scripts/{{appName}}/status.sh'
+      register: check_stop_status
+      failed_when: check_stop_status.rc != 3 and 'stdout_lines' in check_stop_status.stdout_lines
+    - debug: msg={{check_stop_status.stdout_lines}}
+
+    - name: Check deployment directory exists or not
+      stat:
+        path: '{{deploymentDir}}'
+      register: deployment_dir_stat
+
+    - name: Backup Old Jar file
+      shell: 'mv {{deploymentDir}}/{{appName}}.jar {{backupDir}}/'
+      register: bkp
+      when: deployment_dir_stat.stat.exists
+
+    - name: Create deployment directory if not exists
+      file:
+        path: '{{deploymentDir}}'
+        state: directory
+        mode: '0755'
+
+    - name: Copy downloaded jar to deployment location
+      command: 'cp {{downloadDir}}/{{appName}}.jar {{deploymentDir}}'
+      register: copy_status
+    - debug: msg={{copy_status.stdout_lines}}
+
+    - name: Start {{appName}} Service
+      become: yes
+      become_user: root
+      script:
+        cmd: '{{workspace}}/ansible/scripts/{{appName}}/start.sh'
+      register: start_status
+      failed_when: start_status.rc != 3 and 'stdout_lines' in start_status.stdout_lines
+    - debug: msg={{start_status.stdout_lines}}
+
+    - name: Check {{appName}} service has started
+      script:
+        cmd: '{{workspace}}/ansible/scripts/{{appName}}/status.sh'
+      register: check_start_status
+      failed_when: check_start_status.rc != 3 and 'stdout_lines' in check_start_status.stdout_lines
+    - debug: msg={{check_start_status.stdout_lines}}

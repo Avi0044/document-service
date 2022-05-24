@@ -1,0 +1,63 @@
+---
+#
+# Replace the place-holder <PROJECT-NAME> with your project name in lowercase letters.
+#
+appName: '<PROJECT-NAME>'
+# Deployment path where the jar resides.
+appPath: '/home/ubuntu/deployments'
+
+# pem file location for ssh to corresponding UAT server.
+sshKeyFilePath: '/home/<SSH-KEY-NAME>.pem'
+
+# BitBucket
+bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/<PROJECT-NAME>.git'
+repoUrl: 'git@bitbucket.org:paynearyby/<PROJECT-NAME>.git'
+
+# JFrog Artifactory specific configuration.
+
+jfrogArtifactId: 'in/paynearby' # groupId from the pom.xml, If your groupId is in.paynearby, this value should be in/paynearby
+
+# Jfrog Repository will be created as <PROJECT-NAME>-libs-release-local
+jfrogRepositorySuffix: '<PROJECT-NAME>'
+
+# Sonarqube specific configuration.
+sonarqubeProjectKey: '<PROJECT-NAME>-maven-uat'
+
+# Details for sending notification/email
+# This name will be used to show message in the Slack channel.
+projectName: '<PROJECT-NAME>'
+slackChannelId: '<SLACK-CHANNEL-ID>'
+
+# Maven profile, Leave empty if no profile needs to be mentioned
+# else provide profile like below example
+#
+# mavenProfile: '-Dspring.profiles.active=dev'
+#
+mavenProfile: ''
+
+# Maven params, Leave empty if no params needs to be mentioned
+# else provide params like below example
+#
+# mavenProfile: '-DskipTests=true'
+#
+mavenExtraParams: ''
+
+# Version upgrade is in form of major.minor.patch-buildNumber
+# below versionTypes are supported, Change as per requirement:
+# - major
+# - minor
+# - patch
+# - build (Default value, will increment with each build)
+versionType: 'build'
+
+# Set below variable to true if only build has to happen
+build: 'no'
+
+# Set below variable to true if only deployment has to happen
+deploy: 'no'
+
+# Set both above variables to true for build and deploy in single run.
+
+# Ansible variables for CD.
+ansible:
+  verbose: 'no'

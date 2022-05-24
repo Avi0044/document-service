@@ -1,13 +1,11 @@
-[jump-host]
-jhost ansible_host=10.1.0.67
+[uat-server]
+UAT_SERVER_IP ansible_port=22
 
-[dc-server]
-aepshost ansible_host=192.168.26.26 ansible_sudo_pass=Aepsuat@321
-
-[jump-host:vars]
-ansible_user=jenkins
-
-[dc-server:vars]
+[uat-server:vars]
 ansible_user=ubuntu
-ansible_sudo_pass=Aepsuat@321
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q jenkins@10.1.0.67"'
+
+[prod-server]
+@@PROD_SERVER_IP@@ ansible_port=22
+
+[prod-server:vars]
+ansible_user=ubuntu

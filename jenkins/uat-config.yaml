@@ -3,7 +3,7 @@
 # Replace the place-holder <PROJECT-NAME> with your project name in lowercase letters.
 #
 
-appName: '<PROJECT-NAME>'
+appName: 'document-service'
 # Deployment path where the jar/war resides.
 appPath: '/home/ubuntu/deployments'
 
@@ -19,14 +19,14 @@ repoUrl: 'git@bitbucket.org:paynearyby/<PROJECT-NAME>.git'
 jfrogArtifactId: 'in/paynearby' # groupId from the pom.xml, If your groupId is in.paynearby, this value should be in/paynearby
 
 # Jfrog Repository will be created as <PROJECT-NAME>-libs-snapshot-local
-jfrogRepositorySuffix: '<PROJECT-NAME>'
+jfrogRepositorySuffix: 'document-service'
 
 # Sonarqube specific configuration.
-sonarqubeProjectKey: '<PROJECT-NAME>-maven-uat'
+sonarqubeProjectKey: 'document-service-maven-uat'
 
 # Details for sending notification/email
 # This name will be used to show message in the Slack channel.
-projectName: '<PROJECT-NAME>'
+projectName: 'document-service'
 slackChannelId: '<SLACK-CHANNEL-ID>'
 
 # Maven profile, Leave empty if no profile needs to be mentioned
@@ -52,7 +52,7 @@ mavenExtraParams: ''
 versionType: 'build'
 
 # Set below variable to true if only build has to happen
-build: 'no'
+build: 'yes'
 
 # Set below variable to true if only deployment has to happen
 deploy: 'no'

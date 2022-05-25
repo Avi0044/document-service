@@ -1,11 +1,11 @@
 ---
 - name: Download binary file from Jfrog
-  hosts: uat-server
+  hosts: prod-server
   vars:
     workspace: "{{ lookup('env','WORKSPACE') }}"
     ansible_python_interpreter: /usr/bin/python3
     ansible_ssh_private_key_file: "{{sshKeyFilePath}}"
-    jfrog_pass: "{{ lookup('aws_secret', 'Optimus-prime/uat/jfrogAnsibleVault', region='ap-south-1') }}"
+    jfrog_pass: "{{ lookup('aws_secret', 'Optimus-prime/uat/jfrog-cred', region='ap-south-1') }}"
 
   tasks:
     - name: Copy service template to location
@@ -32,35 +32,18 @@
         body_format: json
       register: result
 
-    - name: Get snapshot version
+    - name: Get jar version
       delegate_to: localhost
       xml:
         xmlstring: "{{result.content}}"
         xpath: /metadata/versioning/latest
         content: "text"
-      register: snapshot_version
-
-    - name: Get maven file for latest snapshot
-      uri:
-        url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/{{snapshot_version.matches[0]['latest']}}/maven-metadata.xml"
-        method: GET
-        user: "{{jfrogUserName}}"
-        password: "{{jfrog_pass}}"
-        return_content: yes
-        body_format: json
-      register: maven_result
-
-    - name: Get jar version
-      delegate_to: localhost
-      xml:
-        xmlstring: "{{maven_result.content}}"
-        xpath: "/metadata/versioning/snapshotVersions/snapshotVersion[1]/value"
-        content: "text"
       register: jar_version
+    - debug: msg={{jar_version}}
 
     - name: Set build var
       set_fact:
-        buildNumber: "{{snapshot_version.matches[0]['latest'].split('-')[1]}}"
+        buildNumber: "{{jar_version.matches[0]['latest'].split('-')[1]}}"
 
     - name: Set directories vars
       set_fact:
@@ -82,7 +65,7 @@
 
     - name: Download jar file from Jfrog
       get_url:
-        url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/{{snapshot_version.matches[0]['latest']}}/{{appName}}-{{jar_version.matches[0]['value']}}.jar"
+        url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/{{jar_version.matches[0]['latest']}}/{{appName}}-{{jar_version.matches[0]['latest']}}.jar"
         url_username: "{{jfrogUserName}}"
         url_password: "{{jfrog_pass}}"
         dest: "{{downloadDir}}/"

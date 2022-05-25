@@ -1,9 +1,9 @@
 openapi: 3.0.1
 info:
   #contact:
-    #email: documentsupport@paynearby.in
-    #name: Document Support
-    #url: https://nearby.documentservice.com
+  #email: documentsupport@paynearby.in
+  #name: Document Support
+  #url: https://nearby.documentservice.com
   description: |
     # Introduction
     Document Generator API allows you easily generate PDF documents and reduce the development and support costs by enabling your users to create and manage their document templates.
@@ -24,42 +24,41 @@ info:
   title: Document Generator API
   version: 3.1.1
 servers:
-- url: https://nearby.documentservice.com/api/v1
+  - url: https://nearby.documentservice.com/api/v1
 tags:
-- name: Templates
-- name: Document
-  description: Register & Unregister Templates
+  - name: Templates
+    description: Register & Unregister Templates.
+  - name: Document
+    description: Generate Document
 paths:
   /documents:
     post:
       tags:
-      - Document
-      description: Creates a new template. If template configuration is not specified
-        in the request body then an empty template is created. Template configuration
-        must be sent in the request body.
+        - Document
+      description: Generate Document, document content must be sent in the request body.
       operationId: register-template
       parameters:
-      - name: templateId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: appId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: docType
-        in: query
-        required: false
-        schema:
-          type: string
-          default: PDF
-          enum:
-          - PDF
-          - DOCX
-          - PNG
-          - OTHER
+        - name: templateId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: appId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: docType
+          in: query
+          required: false
+          schema:
+            type: string
+            default: PDF
+            enum:
+              - PDF
+              - DOCX
+              - PNG
+              - OTHER
       requestBody:
         content:
           application/json:
@@ -117,14 +116,14 @@ paths:
                     message: Please Enter Valid Template!
                     debugMessage: null
                     subErrors:
-                    - object: template
-                      field: name
-                      rejectedValue: NotBlank
-                      message: Template name is mandatory
-                    - object: template
-                      field: templateContent
-                      rejectedValue: NotNull
-                      message: Template content is mandatory
+                      - object: template
+                        field: name
+                        rejectedValue: NotBlank
+                        message: Template name is mandatory
+                      - object: template
+                        field: templateContent
+                        rejectedValue: NotNull
+                        message: Template content is mandatory
         "500":
           description: Internal server error
           content:
@@ -143,23 +142,23 @@ paths:
   /api/v1/templates:
     get:
       tags:
-      - Templates
+        - Templates
       description: Get template list based on aapId and status.
       operationId: Template-list
       parameters:
-      - name: appId
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: status
-        in: query
-        required: false
-        schema:
-          type: string
-          enum:
-          - ACTIVE
-          - INACTIVE
+        - name: appId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - INACTIVE
       responses:
         "200":
           description: Templates
@@ -172,16 +171,16 @@ paths:
                   description: Get Template List
                   value:
                     templates:
-                    - appId: "0123"
-                      name: Test
-                      templateContent:
-                        contentType: BASE64
-                        data: PCFET0NUWVBFIGh0bWwNCglQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+DQo8aHRtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCINCgl4bWxuczp0aD0iaHR0cDovL3d3dy50aHltZWxlYWYub3JnIg0KCXhtbG5zOmxheW91dD0iaHR0cDovL3d3dy51bHRyYXEubmV0Lm56L3RoeW1lbGVhZi9sYXlvdXQiPg0KDQo8aGVhZD4NCjx0aXRsZT5UcmFuc2FjdGlvbiBSZWNlaXB0PC90aXRsZT4NCjxsaW5rIGhyZWY9J2h0dHA6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PVJvYm90bycNCglyZWw9J3N0eWxlc2hlZXQnIHR5cGU9J3RleHQvY3NzJyAvPg0KDQo8c3R5bGU+DQp0YWJsZSB7DQoJcGFkZGluZzogM3B4IDZweCAzcHggNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCmJvZHkgew0KCWZvbnQtZmFtaWx5OiAnQ2FsaWJyaScsIHNhbnMtc2VyaWY7DQp9DQoNCnRyIHsNCglwYWRkaW5nOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggNXB4IDBweCAhaW1wb3J0YW50Ow0KCS8qb3V0bGluZTogdGhpbiBzb2xpZDsqLw0KfQ0KDQp0ZCB7DQoJcGFkZGluZzogMHB4IDBweCAwcHggMHB4ICFpbXBvcnRhbnQ7DQoJbWFyZ2luOiAwcHggMHB4IDBweCAwcHggIWltcG9ydGFudDsNCgkvKmJvcmRlci1yaWdodDogMXB4IHNvbGlkIGJsYWNrOyovDQp9DQoNCmgyIHsNCglwYWRkaW5nOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggNXB4IDBweCAhaW1wb3J0YW50Ow0KfQ0KDQpoNCB7DQoJcGFkZGluZzogNXB4IDJweCAycHggNXB4ICFpbXBvcnRhbnQ7DQoJbWFyZ2luOiA1cHggMnB4IDJweCA1cHggIWltcG9ydGFudDsNCgljb2xvcjogIzMzMzMzMyAhaW1wb3J0YW50Ow0KCWZvbnQtc2l6ZTogMThweCAhaW1wb3J0YW50Ow0KfQ0KDQpzdHJvbmcgew0KCXBhZGRpbmc6IDVweCAwcHggMTBweCA1cHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggMnB4IDVweCAhaW1wb3J0YW50Ow0KCWNvbG9yOiAjMzMzMzMzICFpbXBvcnRhbnQ7DQoJZm9udC1zaXplOiAxNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCnAgew0KCXBhZGRpbmc6IDJweCA2cHggMnB4IDZweCAhaW1wb3J0YW50Ow0KCW1hcmdpbjogMnB4IDZweCAycHggNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCmhyIHsNCglib3JkZXI6IDAuNXB4IHNvbGlkICM4RTkwOTA7DQoJbWFyZ2luOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCn0NCg0KLnVzZXItaW1hZ2Ugew0KCXdpZHRoOiAxMDBweCAhaW1wb3J0YW50Ow0KCWhlaWdodDogMTAwcHggIWltcG9ydGFudDsNCglib3JkZXI6IDJweCBzb2xpZCAjQkZDMkM0ICFpbXBvcnRhbnQ7DQoJYm9yZGVyLWNvbGxhcHNlOiBzZXBhcmF0ZSAhaW1wb3J0YW50Ow0KCXBlcnNwZWN0aXZlOiAxcHggIWltcG9ydGFudDsNCglvdmVyZmxvdzogaGlkZGVuICFpbXBvcnRhbnQ7DQp9DQo8L3N0eWxlPg0KPC9oZWFkPg0KDQo8Ym9keSBzdHlsZT0id2lkdGg6IDUwJTsiPg0KCTxkaXY+DQoNCgkJPHRhYmxlIHdpZHRoPSIxMDAlIj4NCgkJCTx0Ym9keT4NCgkJCQk8dHI+DQoJCQkJCTx0ZCB3aWR0aD0iMjAlIj48aW1nIHNyYz0iaHR0cHM6Ly9wYXluZWFyYnkuaW4vd3AtY29udGVudC90aGVtZXMvcGF5bmVhcmJ5L2Fzc2V0cy9pbWFnZXMvbG9nby5wbmciIHdpZHRoPSI5MCINCgkJCQkJCWhlaWdodD0iMzUiIHN0eWxlPSJtYXJnaW4tbGVmdDogMjBweDsiIGFsdD0iIj48L3RkPg0KCQkJCQk8dGQgd2lkdGg9IjgwJSI+PGgyPlRyYW5zYWN0aW9uIFJlY2VpcHQ8L2gyPjwvdGQ+DQoJCQkJPC90cj4NCgkJCTwvdGJvZHk+DQoJCTwvdGFibGU+DQoJCTxici8+DQoJPC9kaXY+DQoJDQoJIDxkaXY+DQoNCgkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQk8dGJvZHk+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQk8aDQ+Q3VzdG9tZXIgRGV0YWlsczo8L2g0Pg0KCQkJCQkJCTwvdGQ+DQoNCgkJCQkJCTwvdHI+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5Nb2JpbGUgTnVtYmVyIChTTVMpPC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHtjdXN0b21lck1vYmlsZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJPC90cj4NCgkJCQkJCTx0cj4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwPkN1c3RvbWVyIE5hbWU8L3A+DQoJCQkJCQkJPC90ZD4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke2N1c3RvbWVyTmFtZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJPC90cj4NCgkJCQkJPC90Ym9keT4NCgkJCQk8L3RhYmxlPg0KCQkJCTxici8+DQoJCQk8L2Rpdj4gPGJyLz4NCgkJCQk8ZGl2Pg0KCQkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQkJPHRib2R5Pg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQkJPGg0PlRyYW5zYWN0aW9uIERldGFpbHM6PC9oND4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQk8L3RyPg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHA+VHJhbnNhY3Rpb24gU3RhdHVzPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0cmFuc2FjdGlvblN0YXR1c30iPjwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQk8L3RyPg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHA+VHJhbnNhY3Rpb24gSUQ8L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke3RyYW5zYWN0aW9uSUR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRyYW5zYWN0aW9uIERhdGUgJiBUaW1lPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0aW1lU3RhbXB9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlBheW1lbnQgTWV0aG9kPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHtwYXltZW50TWV0aG9kfSI+PC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCTwvdHI+DQoJCQkJCQkJPHRyPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cD5UcmFuc2FjdGlvbiBNb2RlPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0cmFuc2FjdGlvbk1vZGV9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRyYW5zYWN0aW9uIEFtb3VudDwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7dHJhbnNhY3Rpb25BbW91bnR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPkNvbnZlbmllbmNlIEZlZTwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7Y29udmVuaWVuY2VGZWV9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRvdGFsIEFtb3VudDwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7dG90YWxBbW91bnR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCg0KCQkJCQkJPC90Ym9keT4NCgkJCQkJPC90YWJsZT4NCgkJCQk8L2Rpdj48YnIvPg0KCQkJCTxkaXY+DQoNCgkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQk8dGJvZHk+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQk8aDQ+QmVuaWZpY2lhcnkgRGV0YWlsczo8L2g0Pg0KCQkJCQkJCTwvdGQ+DQoNCgkJCQkJCTwvdHI+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5CZW5pZmljaWFyeSBOYW1lIDwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlOYW1lfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJPHRyPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHA+QmVuaWZpY2lhcnkgQmFuazwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlCYW5rfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJDQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5CZW5pZmljaWFyeSBBY2NvdW50IE51bWJlcjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlBY2NvdW50TnVtYmVyfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJPHRyPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHA+QmFuayBJRlNDIENvZGU8L3A+DQoJCQkJCQkJPC90ZD4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke2JhbmtJRlNDQ29kZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KDQoJCQkJCQk8L3RyPg0KCQkJCQk8L3Rib2R5Pg0KCQkJCTwvdGFibGU+DQoJCQkJPGJyLz4NCgkJCTwvZGl2PiANCjwvYm9keT4NCg0KPC9odG1sPg==
-                      status: ACTIVE
-                      id: 628b42b31c9bc37e1cd3338b
-                      tag: INVOICE
-                      createdDate: 2022-05-23 13:45:47
-                      lastModifiedDate: 2022-05-23 13:45:47
+                      - appId: "0123"
+                        name: Test
+                        templateContent:
+                          contentType: BASE64
+                          data: PCFET0NUWVBFIGh0bWwNCglQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+DQo8aHRtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCINCgl4bWxuczp0aD0iaHR0cDovL3d3dy50aHltZWxlYWYub3JnIg0KCXhtbG5zOmxheW91dD0iaHR0cDovL3d3dy51bHRyYXEubmV0Lm56L3RoeW1lbGVhZi9sYXlvdXQiPg0KDQo8aGVhZD4NCjx0aXRsZT5UcmFuc2FjdGlvbiBSZWNlaXB0PC90aXRsZT4NCjxsaW5rIGhyZWY9J2h0dHA6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3M/ZmFtaWx5PVJvYm90bycNCglyZWw9J3N0eWxlc2hlZXQnIHR5cGU9J3RleHQvY3NzJyAvPg0KDQo8c3R5bGU+DQp0YWJsZSB7DQoJcGFkZGluZzogM3B4IDZweCAzcHggNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCmJvZHkgew0KCWZvbnQtZmFtaWx5OiAnQ2FsaWJyaScsIHNhbnMtc2VyaWY7DQp9DQoNCnRyIHsNCglwYWRkaW5nOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggNXB4IDBweCAhaW1wb3J0YW50Ow0KCS8qb3V0bGluZTogdGhpbiBzb2xpZDsqLw0KfQ0KDQp0ZCB7DQoJcGFkZGluZzogMHB4IDBweCAwcHggMHB4ICFpbXBvcnRhbnQ7DQoJbWFyZ2luOiAwcHggMHB4IDBweCAwcHggIWltcG9ydGFudDsNCgkvKmJvcmRlci1yaWdodDogMXB4IHNvbGlkIGJsYWNrOyovDQp9DQoNCmgyIHsNCglwYWRkaW5nOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggNXB4IDBweCAhaW1wb3J0YW50Ow0KfQ0KDQpoNCB7DQoJcGFkZGluZzogNXB4IDJweCAycHggNXB4ICFpbXBvcnRhbnQ7DQoJbWFyZ2luOiA1cHggMnB4IDJweCA1cHggIWltcG9ydGFudDsNCgljb2xvcjogIzMzMzMzMyAhaW1wb3J0YW50Ow0KCWZvbnQtc2l6ZTogMThweCAhaW1wb3J0YW50Ow0KfQ0KDQpzdHJvbmcgew0KCXBhZGRpbmc6IDVweCAwcHggMTBweCA1cHggIWltcG9ydGFudDsNCgltYXJnaW46IDVweCAwcHggMnB4IDVweCAhaW1wb3J0YW50Ow0KCWNvbG9yOiAjMzMzMzMzICFpbXBvcnRhbnQ7DQoJZm9udC1zaXplOiAxNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCnAgew0KCXBhZGRpbmc6IDJweCA2cHggMnB4IDZweCAhaW1wb3J0YW50Ow0KCW1hcmdpbjogMnB4IDZweCAycHggNnB4ICFpbXBvcnRhbnQ7DQp9DQoNCmhyIHsNCglib3JkZXI6IDAuNXB4IHNvbGlkICM4RTkwOTA7DQoJbWFyZ2luOiA1cHggMHB4IDVweCAwcHggIWltcG9ydGFudDsNCn0NCg0KLnVzZXItaW1hZ2Ugew0KCXdpZHRoOiAxMDBweCAhaW1wb3J0YW50Ow0KCWhlaWdodDogMTAwcHggIWltcG9ydGFudDsNCglib3JkZXI6IDJweCBzb2xpZCAjQkZDMkM0ICFpbXBvcnRhbnQ7DQoJYm9yZGVyLWNvbGxhcHNlOiBzZXBhcmF0ZSAhaW1wb3J0YW50Ow0KCXBlcnNwZWN0aXZlOiAxcHggIWltcG9ydGFudDsNCglvdmVyZmxvdzogaGlkZGVuICFpbXBvcnRhbnQ7DQp9DQo8L3N0eWxlPg0KPC9oZWFkPg0KDQo8Ym9keSBzdHlsZT0id2lkdGg6IDUwJTsiPg0KCTxkaXY+DQoNCgkJPHRhYmxlIHdpZHRoPSIxMDAlIj4NCgkJCTx0Ym9keT4NCgkJCQk8dHI+DQoJCQkJCTx0ZCB3aWR0aD0iMjAlIj48aW1nIHNyYz0iaHR0cHM6Ly9wYXluZWFyYnkuaW4vd3AtY29udGVudC90aGVtZXMvcGF5bmVhcmJ5L2Fzc2V0cy9pbWFnZXMvbG9nby5wbmciIHdpZHRoPSI5MCINCgkJCQkJCWhlaWdodD0iMzUiIHN0eWxlPSJtYXJnaW4tbGVmdDogMjBweDsiIGFsdD0iIj48L3RkPg0KCQkJCQk8dGQgd2lkdGg9IjgwJSI+PGgyPlRyYW5zYWN0aW9uIFJlY2VpcHQ8L2gyPjwvdGQ+DQoJCQkJPC90cj4NCgkJCTwvdGJvZHk+DQoJCTwvdGFibGU+DQoJCTxici8+DQoJPC9kaXY+DQoJDQoJIDxkaXY+DQoNCgkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQk8dGJvZHk+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQk8aDQ+Q3VzdG9tZXIgRGV0YWlsczo8L2g0Pg0KCQkJCQkJCTwvdGQ+DQoNCgkJCQkJCTwvdHI+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5Nb2JpbGUgTnVtYmVyIChTTVMpPC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHtjdXN0b21lck1vYmlsZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJPC90cj4NCgkJCQkJCTx0cj4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwPkN1c3RvbWVyIE5hbWU8L3A+DQoJCQkJCQkJPC90ZD4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke2N1c3RvbWVyTmFtZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJPC90cj4NCgkJCQkJPC90Ym9keT4NCgkJCQk8L3RhYmxlPg0KCQkJCTxici8+DQoJCQk8L2Rpdj4gPGJyLz4NCgkJCQk8ZGl2Pg0KCQkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQkJPHRib2R5Pg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQkJPGg0PlRyYW5zYWN0aW9uIERldGFpbHM6PC9oND4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQk8L3RyPg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHA+VHJhbnNhY3Rpb24gU3RhdHVzPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0cmFuc2FjdGlvblN0YXR1c30iPjwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQk8L3RyPg0KCQkJCQkJCTx0cj4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHA+VHJhbnNhY3Rpb24gSUQ8L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke3RyYW5zYWN0aW9uSUR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRyYW5zYWN0aW9uIERhdGUgJiBUaW1lPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0aW1lU3RhbXB9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlBheW1lbnQgTWV0aG9kPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHtwYXltZW50TWV0aG9kfSI+PC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCTwvdHI+DQoJCQkJCQkJPHRyPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cD5UcmFuc2FjdGlvbiBNb2RlPC9wPg0KCQkJCQkJCQk8L3RkPg0KCQkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCQk8cCB0aDp1dGV4dD0iJHt0cmFuc2FjdGlvbk1vZGV9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRyYW5zYWN0aW9uIEFtb3VudDwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7dHJhbnNhY3Rpb25BbW91bnR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPkNvbnZlbmllbmNlIEZlZTwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7Y29udmVuaWVuY2VGZWV9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCgkJCQkJCQk8dHI+DQoJCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJCTxwPlRvdGFsIEFtb3VudDwvcD4NCgkJCQkJCQkJPC90ZD4NCgkJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7dG90YWxBbW91bnR9Ij48L3A+DQoJCQkJCQkJCTwvdGQ+DQoJCQkJCQkJPC90cj4NCg0KCQkJCQkJPC90Ym9keT4NCgkJCQkJPC90YWJsZT4NCgkJCQk8L2Rpdj48YnIvPg0KCQkJCTxkaXY+DQoNCgkJCQk8dGFibGUgd2lkdGg9IjEwMCUiPg0KCQkJCQk8dGJvZHk+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIGNvbHNwYW49IjIiPg0KCQkJCQkJCQk8aDQ+QmVuaWZpY2lhcnkgRGV0YWlsczo8L2g0Pg0KCQkJCQkJCTwvdGQ+DQoNCgkJCQkJCTwvdHI+DQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5CZW5pZmljaWFyeSBOYW1lIDwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlOYW1lfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJPHRyPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHA+QmVuaWZpY2lhcnkgQmFuazwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlCYW5rfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJDQoJCQkJCQk8dHI+DQoJCQkJCQkJPHRkIHdpZHRoPSI1MCUiPg0KCQkJCQkJCQk8cD5CZW5pZmljaWFyeSBBY2NvdW50IE51bWJlcjwvcD4NCgkJCQkJCQk8L3RkPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHAgdGg6dXRleHQ9IiR7YmVuaWZpY2lhcnlBY2NvdW50TnVtYmVyfSI+PC9wPg0KCQkJCQkJCTwvdGQ+DQoJCQkJCQk8L3RyPg0KCQkJCQkJPHRyPg0KCQkJCQkJCTx0ZCB3aWR0aD0iNTAlIj4NCgkJCQkJCQkJPHA+QmFuayBJRlNDIENvZGU8L3A+DQoJCQkJCQkJPC90ZD4NCgkJCQkJCQk8dGQgd2lkdGg9IjUwJSI+DQoJCQkJCQkJCTxwIHRoOnV0ZXh0PSIke2JhbmtJRlNDQ29kZX0iPjwvcD4NCgkJCQkJCQk8L3RkPg0KDQoJCQkJCQk8L3RyPg0KCQkJCQk8L3Rib2R5Pg0KCQkJCTwvdGFibGU+DQoJCQkJPGJyLz4NCgkJCTwvZGl2PiANCjwvYm9keT4NCg0KPC9odG1sPg==
+                        status: ACTIVE
+                        id: 628b42b31c9bc37e1cd3338b
+                        tag: INVOICE
+                        createdDate: 2022-05-23 13:45:47
+                        lastModifiedDate: 2022-05-23 13:45:47
         "400":
           description: Please enter valid appId & status
           content:
@@ -229,7 +228,7 @@ paths:
                     subErrors: null
     post:
       tags:
-      - Templates
+        - Templates
       description: Creates a new template. If template configuration is not specified
         in the request body then an empty template is created. Template configuration
         must be sent in the request body.
@@ -291,14 +290,14 @@ paths:
                     message: Please Enter Valid Template!
                     debugMessage: null
                     subErrors:
-                    - object: template
-                      field: name
-                      rejectedValue: NotBlank
-                      message: Template name is mandatory
-                    - object: template
-                      field: templateContent
-                      rejectedValue: NotNull
-                      message: Template content is mandatory
+                      - object: template
+                        field: name
+                        rejectedValue: NotBlank
+                        message: Template name is mandatory
+                      - object: template
+                        field: templateContent
+                        rejectedValue: NotNull
+                        message: Template content is mandatory
         "500":
           description: Internal server error
           content:
@@ -316,7 +315,7 @@ paths:
                     subErrors: null
     patch:
       tags:
-      - Templates
+        - Templates
       description: Unregister or Update an existing template.
       operationId: update-template
       requestBody:
@@ -373,14 +372,14 @@ paths:
                     message: Please Enter Valid Template!
                     debugMessage: null
                     subErrors:
-                    - object: template
-                      field: name
-                      rejectedValue: NotBlank
-                      message: Template name is mandatory
-                    - object: template
-                      field: appId
-                      rejectedValue: NotBlank
-                      message: Application id is mandatory
+                      - object: template
+                        field: name
+                        rejectedValue: NotBlank
+                        message: Template name is mandatory
+                      - object: template
+                        field: appId
+                        rejectedValue: NotBlank
+                        message: Application id is mandatory
         "500":
           description: Internal server error
           content:
@@ -399,20 +398,20 @@ paths:
   /api/v1/templates/{templateId}:
     get:
       tags:
-      - Templates
+        - Templates
       description: Get template based on aapId and templateId.
       operationId: Template_4
       parameters:
-      - name: templateId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: appId
-        in: query
-        required: true
-        schema:
-          type: string
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: appId
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Templates
@@ -507,15 +506,15 @@ components:
         status:
           type: string
           enum:
-          - ACTIVE
-          - INACTIVE
+            - ACTIVE
+            - INACTIVE
         id:
           type: string
         tag:
           type: string
           enum:
-          - INVOICE
-          - ORDER
+            - INVOICE
+            - ORDER
         createdDate:
           type: string
           format: date-time
@@ -524,14 +523,14 @@ components:
           format: date-time
     TemplateContent:
       required:
-      - contentType
-      - data
+        - contentType
+        - data
       type: object
       properties:
         contentType:
           type: string
           enum:
-          - BASE64
+            - BASE64
         data:
           type: string
     ApiError:
@@ -540,74 +539,74 @@ components:
         status:
           type: string
           enum:
-          - 100 CONTINUE
-          - 101 SWITCHING_PROTOCOLS
-          - 102 PROCESSING
-          - 103 CHECKPOINT
-          - 200 OK
-          - 201 CREATED
-          - 202 ACCEPTED
-          - 203 NON_AUTHORITATIVE_INFORMATION
-          - 204 NO_CONTENT
-          - 205 RESET_CONTENT
-          - 206 PARTIAL_CONTENT
-          - 207 MULTI_STATUS
-          - 208 ALREADY_REPORTED
-          - 226 IM_USED
-          - 300 MULTIPLE_CHOICES
-          - 301 MOVED_PERMANENTLY
-          - 302 FOUND
-          - 302 MOVED_TEMPORARILY
-          - 303 SEE_OTHER
-          - 304 NOT_MODIFIED
-          - 305 USE_PROXY
-          - 307 TEMPORARY_REDIRECT
-          - 308 PERMANENT_REDIRECT
-          - 400 BAD_REQUEST
-          - 401 UNAUTHORIZED
-          - 402 PAYMENT_REQUIRED
-          - 403 FORBIDDEN
-          - 404 NOT_FOUND
-          - 405 METHOD_NOT_ALLOWED
-          - 406 NOT_ACCEPTABLE
-          - 407 PROXY_AUTHENTICATION_REQUIRED
-          - 408 REQUEST_TIMEOUT
-          - 409 CONFLICT
-          - 410 GONE
-          - 411 LENGTH_REQUIRED
-          - 412 PRECONDITION_FAILED
-          - 413 PAYLOAD_TOO_LARGE
-          - 413 REQUEST_ENTITY_TOO_LARGE
-          - 414 URI_TOO_LONG
-          - 414 REQUEST_URI_TOO_LONG
-          - 415 UNSUPPORTED_MEDIA_TYPE
-          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
-          - 417 EXPECTATION_FAILED
-          - 418 I_AM_A_TEAPOT
-          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
-          - 420 METHOD_FAILURE
-          - 421 DESTINATION_LOCKED
-          - 422 UNPROCESSABLE_ENTITY
-          - 423 LOCKED
-          - 424 FAILED_DEPENDENCY
-          - 425 TOO_EARLY
-          - 426 UPGRADE_REQUIRED
-          - 428 PRECONDITION_REQUIRED
-          - 429 TOO_MANY_REQUESTS
-          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
-          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
-          - 500 INTERNAL_SERVER_ERROR
-          - 501 NOT_IMPLEMENTED
-          - 502 BAD_GATEWAY
-          - 503 SERVICE_UNAVAILABLE
-          - 504 GATEWAY_TIMEOUT
-          - 505 HTTP_VERSION_NOT_SUPPORTED
-          - 506 VARIANT_ALSO_NEGOTIATES
-          - 507 INSUFFICIENT_STORAGE
-          - 508 LOOP_DETECTED
-          - 509 BANDWIDTH_LIMIT_EXCEEDED
-          - 510 NOT_EXTENDED
-          - 511 NETWORK_AUTHENTICATION_REQUIRED
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
         timestamp:
           type: string
           format: date-time

@@ -8,7 +8,7 @@ appName: 'document-service'
 appPath: '/home/ubuntu/deployments'
 
 # pem file location for ssh to corresponding UAT server.
-sshKeyFilePath: '/home/<SSH-KEY-NAME>.pem'
+sshKeyFilePath: '/home/buynearby_staging.pem'
 
 # BitBucket
 bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/document-service.git'
@@ -27,7 +27,7 @@ sonarqubeProjectKey: 'document-service-maven-uat'
 # Details for sending notification/email
 # This name will be used to show message in the Slack channel.
 projectName: 'document-service'
-slackChannelId: '<SLACK-CHANNEL-ID>'
+slackChannelId: 'C02MQ4DG125'
 
 # Maven profile, Leave empty if no profile needs to be mentioned
 # else provide profile like below example

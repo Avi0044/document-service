@@ -11,8 +11,8 @@ appPath: '/home/ubuntu/deployments'
 sshKeyFilePath: '/home/<SSH-KEY-NAME>.pem'
 
 # BitBucket
-bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/<PROJECT-NAME>.git'
-repoUrl: 'git@bitbucket.org:paynearyby/<PROJECT-NAME>.git'
+bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/document-service.git'
+repoUrl: 'git@bitbucket.org:paynearyby/document-service.git'
 
 # JFrog Artifactory specific configuration.
 

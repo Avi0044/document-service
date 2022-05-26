@@ -2,12 +2,12 @@
 <Configuration status="WARN">
 
     <Properties>
-        <property name="basePath">/var/log/aeps/document</property>
+        <property name="basePath">/var/log/document-service</property>
     </Properties>
     <Appenders>
-       <!-- <Console name="LogInJSON" target="SYSTEM_OUT">
+        <Console name="LogInJSON" target="SYSTEM_OUT">
             <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json"/>
-        </Console>-->
+        </Console>
 
         <RollingFile name="fileApp"
                      fileName="${basePath}/document.log"

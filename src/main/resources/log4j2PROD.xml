@@ -2,7 +2,7 @@
 <Configuration status="WARN">
 
     <Properties>
-        <property name="basePath">/var/log/aeps/document</property>
+        <property name="basePath">/var/log/document-service</property>
     </Properties>
     <Appenders>
         <!--<Console name="LogInJSON" target="SYSTEM_OUT">

@@ -36,6 +36,6 @@ public class Template {
     @Valid
     @NotNull(message = "Template content is mandatory")
     public TemplateContent templateContent;
-
+    private String type;
     private Tag tag;
 }

@@ -22,6 +22,7 @@ public class Template {
     public TemplateContent templateContent;
     public Status status;
     private String id;
+    private String type;
     private Tag tag;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;

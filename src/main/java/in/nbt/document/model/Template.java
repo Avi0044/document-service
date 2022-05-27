@@ -24,6 +24,7 @@ public class Template {
     public String name;
     public TemplateContent templateContent;
     public Status status = Status.ACTIVE;
+    private String type;
     public Tag tag;
     @CreatedDate
     private LocalDateTime createdDate;

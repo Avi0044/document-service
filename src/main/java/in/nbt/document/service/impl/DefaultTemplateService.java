@@ -61,6 +61,9 @@ public class DefaultTemplateService implements TemplateService {
             templateModel.setTemplateContent(template.getTemplateContent());
         }
         templateModel.setName(template.getName());
+        if(template.getType()!=null){
+            templateModel.setType(template.getType());
+        }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
         log.info("Template Updated Successfully With TemplateID : {}", responseToBeReturned.getId());

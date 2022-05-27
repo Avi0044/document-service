@@ -2,7 +2,7 @@
 <Configuration status="WARN">
 
     <Properties>
-        <property name="basePath">C:\Users\nbt2330\Desktop\Logs</property>
+        <property name="basePath">/var/log/document-service</property>
     </Properties>
     <Appenders>
         <Console name="LogInJSON" target="SYSTEM_OUT">

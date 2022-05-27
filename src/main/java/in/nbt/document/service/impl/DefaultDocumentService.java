@@ -2,6 +2,7 @@ package in.nbt.document.service.impl;
 
 import in.nbt.document.dto.DocumentDetails;
 import in.nbt.document.dto.enums.DocType;
+import in.nbt.document.dto.enums.Status;
 import in.nbt.document.dto.responses.DocumentResponse;
 import in.nbt.document.dto.responses.Template;
 import in.nbt.document.exception.BadRequestException;
@@ -49,6 +50,9 @@ public class DefaultDocumentService implements DocumentService {
         }
 
         Template template = templateService.getTemplateByIdAndAppId(templateId, appId);
+        if(Status.INACTIVE.equals(template.getStatus())){
+            throw new BadRequestException("Sorry! Template That You Are Sending Is INACTIVE, Please Send Active Template");
+        }
         DocumentGeneratorStrategy documentGeneratorStrategy = documentStrategyFactory.findStrategy(docType);
         byte[] bytes = documentGeneratorStrategy.generateDocument(decodeBase64ToString(template.getTemplateContent().getData()), documentDetails);
         DocumentResponse documentResponse = new DocumentResponse(bytes);

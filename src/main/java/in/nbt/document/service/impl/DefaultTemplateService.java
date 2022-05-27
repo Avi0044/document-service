@@ -36,6 +36,9 @@ public class DefaultTemplateService implements TemplateService {
         log.info("Register Template Execution Started");
         //templateValidator.validateTemplate(template);
         in.nbt.document.model.Template templateModel = templateMapper.mapRequestToModel(template);
+        if(templateModel.getStatus()==null){
+            templateModel.setStatus(Status.ACTIVE);
+        }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
         log.info("Template Registered Successfully With TemplateID : {}", responseToBeReturned.getId());

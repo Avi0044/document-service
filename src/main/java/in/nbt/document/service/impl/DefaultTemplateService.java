@@ -41,7 +41,7 @@ public class DefaultTemplateService implements TemplateService {
         }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
-        log.info("Template Registered Successfully With TemplateID : {}", responseToBeReturned.getId());
+        log.info("Template Registered Successfully for appId : {} and templateID : {}",responseToBeReturned.getAppId(), responseToBeReturned.getId());
         return responseToBeReturned;
     }
 
@@ -66,13 +66,13 @@ public class DefaultTemplateService implements TemplateService {
         }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
-        log.info("Template Updated Successfully With TemplateID : {}", responseToBeReturned.getId());
+        log.info("Template Updated Successfully for appId : {} and templateID : {}",responseToBeReturned.getAppId(), responseToBeReturned.getId());
         return responseToBeReturned;
     }
 
     @Override
     public TemplateResponse getTemplates(String appId, Status status) {
-        log.info("Get Templates Execution Started");
+        log.info("Get Templates Execution Started for appId : {} and Status : {}",appId,status);
         if (StringUtils.isBlank(appId)) {
             log.error("AppId id must not be null!");
             throw new BadRequestException("AppId id must not be null!");
@@ -87,13 +87,13 @@ public class DefaultTemplateService implements TemplateService {
             throw new NotFoundException("No Template Found for appId : " + appId);
         }
         List<Template> listOfTemplates = templateMapper.mapTemplateModelsToResponses(templates);
-        log.info("Template list fetched Successfully, Total Count : {}", listOfTemplates.size());
+        log.info("Template list fetched Successfully for appId : {}, Total Count : {}",appId, listOfTemplates.size());
         return new TemplateResponse(listOfTemplates);
     }
 
     @Override
     public Template getTemplateByIdAndAppId(String templateId, String appId) {
-        log.info("Get Template Execution Started");
+        log.info("Get Template Execution Started for appId : {} and TemplateId : {}",appId,templateId);
         if (StringUtils.isBlank(templateId) || StringUtils.isBlank(appId)) {
             log.info("Get templates for id:  {} & application id: {} ", templateId, appId);
             throw new BadRequestException("Either template id or app id is missing.");
@@ -104,7 +104,7 @@ public class DefaultTemplateService implements TemplateService {
             log.error("Template not present");
             throw new NotFoundException("Template not present");
         }
-        log.info("Template found, TemplateId : {}", savedTemplate.getId());
+        log.info("Template found successfully , TemplateId : {} , appId : {}", savedTemplate.getId(),savedTemplate.getAppId());
         return templateMapper.mapTemplateModelToResponse(savedTemplate);
     }
 }

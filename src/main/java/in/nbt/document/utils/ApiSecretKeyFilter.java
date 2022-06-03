@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.HTML;
 import java.io.IOException;
-@Profile({"PROD","UAT"})
+//@Profile({"PROD","UAT"})
 @Component
 @Order(1)
 public class ApiSecretKeyFilter implements Filter {

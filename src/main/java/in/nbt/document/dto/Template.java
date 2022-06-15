@@ -28,7 +28,7 @@ public class Template {
 
     @NotBlank(message = "Template name is mandatory")
     @Size(min = 4, message = "Template name should be at least 4 characters")
-    @Size(max = 10, message = "Template name should not be greater than 20 characters")
+    @Size(max = 30, message = "Template name should not be greater than 30 characters")
     private String name;
 
     private Status status;

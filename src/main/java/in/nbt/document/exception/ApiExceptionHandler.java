@@ -1,7 +1,10 @@
 package in.nbt.document.exception;
 
+import in.nbt.document.controller.TemplateController;
 import in.nbt.document.dto.responses.ApiError;
 import in.nbt.document.dto.responses.ApiSubError;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+    protected static final Logger log = LogManager.getLogger(ApiExceptionHandler.class);
 
     @ExceptionHandler({BadRequestException.class,UnexpectedTypeException.class})
     protected ResponseEntity<Object> handleEntityNotFound(
@@ -64,11 +68,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             ApiSubError error =
                     new ApiSubError(fieldError.getObjectName(),fieldError.getField(), fieldError.getCode(), fieldError.getDefaultMessage());
             errors.add(error);
+            log.error("Exception Occurred: {}",error);
         }
         for (ObjectError objectError : globalErrors) {
             ApiSubError error = new ApiSubError(null,objectError.getObjectName(), objectError.getDefaultMessage(),
                     objectError.getCode());
             errors.add(error);
+            log.info("Exception Occurred: {}",error);
         }
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage("Please Enter Valid Template!");

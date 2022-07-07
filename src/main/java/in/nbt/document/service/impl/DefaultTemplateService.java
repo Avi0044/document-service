@@ -71,16 +71,21 @@ public class DefaultTemplateService implements TemplateService {
     }
 
     @Override
-    public TemplateResponse getTemplates(String appId, Status status) {
+    public TemplateResponse getTemplates(String appId, Status status,String type) {
         log.info("Get Templates Execution Started for appId : {} and Status : {}",appId,status);
         if (StringUtils.isBlank(appId)) {
             log.error("AppId id must not be null!");
             throw new BadRequestException("AppId id must not be null!");
         }
         List<in.nbt.document.model.Template> templates = new LinkedList<>();
-        if (status != null) {
+        if (status != null && type==null) {
             templates = templateRepository.findAllByStatusAndAppId(status, appId);
-        } else {
+        }else if(status == null && type!=null){
+            templates = templateRepository.findAllByTypeAndAppId(type, appId);
+        }else if(status != null && type!=null){
+            templates = templateRepository.findAllByStatusAndTypeAndAppId(status,type, appId);
+        }
+        else {
             templates = templateRepository.findAllByAppId(appId);
         }
         if (templates.isEmpty()) {

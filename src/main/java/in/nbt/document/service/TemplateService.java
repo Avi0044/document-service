@@ -8,7 +8,7 @@ public interface TemplateService {
     Template registerTemplate(in.nbt.document.dto.Template template);
 
     Template updateTemplate(in.nbt.document.dto.Template template);
-    TemplateResponse getTemplates(String appId, Status status);
+    TemplateResponse getTemplates(String appId, Status status,String type);
 
     Template getTemplateByIdAndAppId(String templateId, String appId);
 }

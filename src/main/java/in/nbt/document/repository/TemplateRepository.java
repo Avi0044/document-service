@@ -14,4 +14,8 @@ public interface TemplateRepository extends MongoRepository<Template, String> {
     List<Template> findAllByStatusAndAppId(Status status, String appId);
 
     List<Template> findAllByAppId(String appId);
+
+    List<Template> findAllByTypeAndAppId(String type, String appId);
+
+    List<Template> findAllByStatusAndTypeAndAppId(Status status, String type, String appId);
 }

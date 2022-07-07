@@ -304,9 +304,10 @@ public class TemplateController {
     })
     @GetMapping
     public ResponseEntity<TemplateResponse> getTemplates(@RequestParam(required = true) String appId,
-                                                         @RequestParam(required = false) Status status) {
+                                                         @RequestParam(required = false) Status status,
+                                                         @RequestParam(required = false) String type) {
         log.info("Get Templates Request Received");
-        TemplateResponse templateResponse = defaultTemplateService.getTemplates(appId, status);
+        TemplateResponse templateResponse = defaultTemplateService.getTemplates(appId, status,type);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(templateResponse);
     }

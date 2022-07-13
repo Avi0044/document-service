@@ -8,10 +8,10 @@ info:
     # Introduction
     Document Generator API allows you easily generate PDF documents and reduce the development and support costs by enabling your users to create and manage their document templates.
     ## Base URL
-    The base URL for all the API endpoints is `https://nearby.documentservice.com/api/v1`
+    The base URL for all the API endpoints is `https://services-aepsv2-uat.paynearby.in/api/v1`
     For example
-    * `https://nearby.documentservice.com/api/v1/templates`
-    * `https://nearby.documentservice.com/api/v1/document-templates/{templateId}`
+    * `https://services-aepsv2-uat.paynearby.in/api/v1/templates`
+    * `https://services-aepsv2-uat.paynearby.in/api/v1/documents/{templateId}`
     # Error codes
     | Code   | Description                    |
     |--------|--------------------------------|
@@ -156,6 +156,11 @@ paths:
             enum:
               - ACTIVE
               - INACTIVE
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Templates

@@ -1,1 +1,0 @@
-systemctl stop document-service --no-pager

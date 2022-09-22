@@ -1,0 +1,16 @@
+[Unit]
+Description=SpringBoot Application
+After=syslog.target
+
+[Service]
+User=ubuntu
+#path to executable
+#executable is a bash script which runs jar file
+ExecStart=/bin/java -jar /home/ubuntu/deployments/document-service/document-service.jar
+SuccessExitStatus=143
+#TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

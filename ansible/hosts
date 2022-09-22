@@ -1,8 +1,10 @@
 [uat_server]
 172.31.246.22 ansible_port=22
 
+
 [uat_server:vars]
 ansible_user=ubuntu
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q jenkins@10.1.0.67"'
 
 [prod_server]
 @@PROD_SERVER_IP@@ ansible_port=22

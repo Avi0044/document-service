@@ -34,7 +34,7 @@ slackChannelId: 'C02KK0F8TM5'
 #
 # mavenProfile: '-Dspring.profiles.active=dev'
 #
-mavenProfile: ''
+mavenProfile: '-Dspring.profiles.active=awsuat'
 
 # Maven params, Leave empty if no params needs to be mentioned
 # else provide params like below example

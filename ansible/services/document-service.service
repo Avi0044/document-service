@@ -6,7 +6,7 @@ After=syslog.target
 User=ubuntu
 #path to executable
 #executable is a bash script which runs jar file
-ExecStart=/bin/java -jar /home/ubuntu/deployments/document-service/document-service.jar
+ExecStart=/bin/java -jar -Dspring.profiles.active=awsuat /home/ubuntu/deployments/document-service/document-service.jar
 SuccessExitStatus=143
 #TimeoutStopSec=10
 Restart=on-failure

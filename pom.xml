@@ -10,7 +10,7 @@
     </parent>
     <groupId>in.paynearby</groupId>
     <artifactId>document-service</artifactId>
-    <version>0.0.1-1-SNAPSHOT</version>
+    <version>0.0.1-2-SNAPSHOT</version>
     <name>document-service</name>
     <description>Document Microservice to generate a document(pdf,xls,zip) based on provided templates</description>
     <properties>
@@ -225,4 +225,52 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>paynearby-artifactory-primary-0-snapshots</name>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>central</id>
+            <name>paynearby-artifactory-primary-0-releases</name>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-release-local</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <name>document-service-libs-release</name>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <name>document-service-libs-snapshot</name>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <name>document-service-libs-release</name>
+        </pluginRepository>
+        <pluginRepository>
+            <id>snapshots</id>
+            <url>https://paynearby.jfrog.io/artifactory/document-service-libs-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <name>document-service-libs-snapshot</name>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

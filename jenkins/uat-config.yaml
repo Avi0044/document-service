@@ -1,0 +1,70 @@
+---
+#
+# Replace the place-holder < > with your project name in lowercase letters.
+#
+appName: 'document-service'
+
+# Deployment path where the jar/war resides.
+appPath: '/home/ubuntu/deployments'
+
+# pem file location for ssh to corresponding UAT server.
+sshKeyFilePath: '/home/dp-servers.pem'
+
+# BitBucket
+bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/document-service.git'
+repoUrl: 'git@bitbucket.org:paynearyby/document-service.git'
+
+# JFrog Artifactory specific configuration.
+
+jfrogArtifactId: 'in/paynearby' # groupId from the pom.xml, If your groupId is in.paynearby, this value should be in/paynearby
+
+# Jfrog Repository will be created as document-service-libs-snapshot-local
+jfrogRepositorySuffix: 'document-service'
+
+# Sonarqube specific configuration.
+sonarqubeProjectKey: 'document-service-maven-uat'
+
+# Details for sending notification/email
+# This name will be used to show message in the Slack channel.
+projectName: 'document-service'
+slackChannelId: 'C02KK0F8TM5'
+
+# Maven profile, Leave empty if no profile needs to be mentioned
+# else provide profile like below example
+#
+# mavenProfile: '-Dspring.profiles.active=dev'
+#
+mavenProfile: '-Dspring.profiles.active=awsuat'
+
+# Maven params, Leave empty if no params needs to be mentioned
+# else provide params like below example
+#
+# mavenProfile: '-DskipTests=true'
+#
+mavenExtraParams: ''
+
+# Version upgrade is in form of major.minor.patch-buildNumber
+# below versionTypes are supported, Change as per requirement:
+# - major
+# - minor
+# - patch
+# - build (Default value, will increment with each build)
+versionType: 'build'
+
+# Set below variable to true if only build has to happen
+build: 'no'
+
+# Set below variable to true if only deployment has to happen
+deploy: 'yes'
+
+# Set both above variables to true for build and deploy in single run.
+
+# Ansible related variables.
+ansible:
+  verbose: 'no'
+
+# Service name is used to map the same frontend and backend components
+# Provide the same name in corresponding frontend/backend
+serviceName: document-service
+# provide component type: [ frontend, backend , all]
+componentType: backend

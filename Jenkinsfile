@@ -7,7 +7,7 @@ def rtMaven
 
 def loadAppConfig(){
     config_file = "jenkins/uat-config.yaml"
-    if ((env.BRANCH_NAME =~ ".*release.*").matches()){
+    if ((env.BRANCH_NAME =~ "release.*").matches()){
         config_file = "jenkins/prod-config.yaml"
     }
    def data = readYaml(file: config_file)
@@ -16,7 +16,7 @@ def loadAppConfig(){
 
 pipeline{
     agent{
-        label "pnb-maven" 
+        label "pnb-maven-linux" 
     }
     tools{
         maven "maven-3.6"
@@ -33,7 +33,7 @@ pipeline{
         stage("Artifactory Configuration"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*release.*").matches())
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -45,7 +45,7 @@ pipeline{
         stage("Increment app version"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*release.*").matches())
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -57,7 +57,7 @@ pipeline{
         stage("Commit version update"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*release.*").matches())
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -69,7 +69,7 @@ pipeline{
         stage("SonarQube code analysis"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -81,7 +81,7 @@ pipeline{
         stage("SonarQube quality gate"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -94,7 +94,7 @@ pipeline{
         stage("Exec Maven"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*release.*").matches())
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -106,7 +106,7 @@ pipeline{
         stage("Publish build info"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*release.*").matches())
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -118,7 +118,7 @@ pipeline{
         stage("J-Xray scan build"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -130,7 +130,7 @@ pipeline{
         stage("Generate Vulnerability Report"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
@@ -142,12 +142,36 @@ pipeline{
         stage("Check Banned License and Create Attribution List"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
                 }
             }
             steps{
                 script{
                     bannedLicenseAndAttribution(configValues, buildType, "multiRepo", "true")
+                }
+            }
+        }
+        stage("Upload License file to S3 Bucket"){
+            when {
+                expression {
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                }
+            }
+            steps{
+                script{
+                    uploadLicensesToS3(configValues)
+                }
+            }
+        }
+        stage("Upload License file to Version Control"){
+            when {
+                expression {
+                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                }
+            }
+            steps{
+                script{
+                    licenseVersionControl(configValues)
                 }
             }
         }
@@ -166,7 +190,7 @@ pipeline{
         stage("Deploy in Production"){
             when {
                 expression {
-                    configValues.deploy == "yes" && (env.BRANCH_NAME =~ ".*release.*").matches()
+                    configValues.deploy == "yes" && (env.BRANCH_NAME =~ "release.*").matches()
                 }
             }
             steps{

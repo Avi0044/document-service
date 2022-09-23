@@ -52,7 +52,7 @@ mavenExtraParams: ''
 versionType: 'build'
 
 # Set below variable to true if only build has to happen
-build: 'no'
+build: 'yes'
 
 # Set below variable to true if only deployment has to happen
 deploy: 'yes'

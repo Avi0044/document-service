@@ -45,14 +45,14 @@
       become: yes
       become_user: root
       copy:
-        src: "{{workspace}}/ansible/services/{{appName}}_{{servicePort}}.service"
+        src: "{{workspace}}/ansible/services/{{appName}}.service"
         dest: "/etc/systemd/system/"
 
     - name: "Enable service"
       become: yes
       become_user: root
       systemd:
-        name: "{{appName}}_{{servicePort}}"
+        name: "{{appName}}"
         enabled: yes
 
     - name: "Daemon reload"
@@ -80,7 +80,7 @@
       become_user: root
       systemd:
         state: stopped
-        name: "{{appName}}_{{servicePort}}"
+        name: "{{appName}}"
       register: stop_status
       when: previous_deployment_stat.stat.exists
 
@@ -104,7 +104,7 @@
       become_user: root
       systemd:
         state: started
-        name: "{{appName}}_{{servicePort}}"
+        name: "{{appName}}"
       register: start_status
 
     - name: "Delete download directory"

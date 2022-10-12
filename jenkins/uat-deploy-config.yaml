@@ -1,0 +1,9 @@
+deploy: 'yes'
+
+deploymentEnvironment: 'UAT'
+
+servicePort: '8899'
+
+serviceFlags:
+  - "-Dspring.profiles.active=awsuat"
+  - "-javaagent:/opt/sfagent/sftrace/java/sftrace-java-agent.jar"

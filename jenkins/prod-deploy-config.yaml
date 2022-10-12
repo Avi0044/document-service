@@ -1,0 +1,9 @@
+deploy: 'no'
+
+deploymentEnvironment: 'PROD'
+
+servicePort: '8899'
+
+serviceFlags:
+  - "-Dspring.profiles.active=prod"
+  - "-javaagent:/opt/sfagent/sftrace/java/sftrace-java-agent.jar"

@@ -1,20 +1,33 @@
-@Library('jenkins-shared-library') _
+@Library('jenkins-shared-library@library/v4') _
 
 def buildInfo
 def jfrogServer
 def buildType = "Maven"
 def rtMaven
+def getConfirmation = "NO"
 
-def loadAppConfig(){
-    config_file = "jenkins/uat-config.yaml"
-    if ((env.BRANCH_NAME =~ "release.*").matches()){
-        config_file = "jenkins/prod-config.yaml"
+def loadAppConfig(String configType, String targetEnv){
+    config_file = "jenkins/build-config.yaml"
+    deploy_file = "jenkins/uat-deploy-config.yaml"
+
+    if (params.ENVIRONMENT == "PROD"){
+        deploy_file = "jenkins/prod-deploy-config.yaml"
     }
-   def data = readYaml(file: config_file)
-    return data;
+    if (configType == 'deploy'){
+        return readYaml(file: deploy_file)
+    }
+    return readYaml(file: config_file);
 }
 
 pipeline{
+    
+        parameters {
+        choice(name: "ENVIRONMENT", choices: ["UAT", "PROD"])
+        string(name: "ARTIFACT_VERSION",
+                      description: "Enter the artifact version (Should be QA verified in case of PROD)",
+                      defaultValue: "latest")
+    }
+        
     agent{
         label "pnb-maven-linux" 
     }
@@ -26,62 +39,67 @@ pipeline{
             steps{
                 script{
                     echo "initializing ..."
-					configValues = loadAppConfig()
+					buildConfig = loadAppConfig("build", params.ENVIRONMENT)
+					deployConfig = loadAppConfig("deploy", params.ENVIRONMENT)
+					deployConfig.deployBuildNumber = params.ARTIFACT_VERSION
+					println "###################################################"
+					println "Jenkins running for environment: ${params.ENVIRONMENT}"
+					println "###################################################"
                 }
             }
         }
         stage("Artifactory Configuration"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    (jfrogServer, rtMaven, buildInfo) = jfrogConfig(configValues, buildType)
+                    (jfrogServer, rtMaven, buildInfo) = jfrogConfig(buildConfig, buildType)
                 }
             }
         }
         stage("Increment app version"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    incrementAppVersion(configValues, currentBuild.number, "multiRepo")
+                    incrementAppVersion(buildConfig, currentBuild.number, "multiRepo")
                 }
             }
         }
         stage("Commit version update"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    gitCommit(configValues)
+                    gitCommit(buildConfig)
                 }
             }
         }
         stage("SonarQube code analysis"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    sonarScan(buildType, configValues)
+                    sonarScan(buildType, buildConfig)
                 }
             }
         }
         stage("SonarQube quality gate"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
@@ -94,19 +112,19 @@ pipeline{
         stage("Exec Maven"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    executeMaven("pom.xml", rtMaven, configValues, buildInfo, "multiRepo")
+                    executeMaven("pom.xml", rtMaven, buildConfig, buildInfo, "multiRepo")
                 }
             }
         }
         stage("Publish build info"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
@@ -118,7 +136,7 @@ pipeline{
         stage("J-Xray scan build"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
@@ -130,72 +148,85 @@ pipeline{
         stage("Generate Vulnerability Report"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    sendVulnerabilityFileToSlack(configValues, buildInfo.name, buildInfo.number, buildType)
+                    sendVulnerabilityFileToSlack(buildConfig, buildInfo.name, buildInfo.number, buildType)
                 }
             }
         }
         stage("Check Banned License and Create Attribution List"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    bannedLicenseAndAttribution(configValues, buildType, "multiRepo", "true")
+                    bannedLicenseAndAttribution(buildConfig, buildType, "${buildInfo.name}", "${currentBuild.number}", "multiRepo", "true")
                 }
             }
         }
         stage("Upload License file to S3 Bucket"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    uploadLicensesToS3(configValues)
+                    uploadLicensesToS3(buildConfig)
                 }
             }
         }
         stage("Upload License file to Version Control"){
             when {
                 expression {
-                    configValues.build == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ "release.*").matches())
+                    buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    licenseVersionControl(configValues)
+                    licenseVersionControl(buildConfig)
                 }
             }
         }
         stage("Deploy in UAT"){
             when {
                 expression {
-                    configValues.deploy == "yes" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
+                    deployConfig.deploy == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd")
                 }
             }
             steps{
                 script{
-                    uatDeploy(configValues, buildType)
+                    uatDeploy(buildConfig, deployConfig, buildType)
+                }
+            }
+        }
+        stage("Wait for input (in case of prod)"){
+            when {
+                expression {
+                    deployConfig.deploy == "yes" && params.ENVIRONMENT == "PROD" && (env.BRANCH_NAME == "develop" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
+                }
+            }
+            steps{
+                script{
+                    getConfirmation = input(id: 'userInput', message: "This will deploy build ${deployConfig.deployBuildNumber}, Continue?",
+					     parameters: [[$class: 'ChoiceParameterDefinition', name:'userInput', choices: "NO\nYES"]])
                 }
             }
         }
         stage("Deploy in Production"){
             when {
                 expression {
-                    configValues.deploy == "yes" && (env.BRANCH_NAME =~ "release.*").matches()
+                    getConfirmation == "YES" && deployConfig.deploy == "yes" && params.ENVIRONMENT == "PROD" && (env.BRANCH_NAME == "develop" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
                 }
             }
             steps{
                 script{
-                    prodDeploy(configValues, buildType)
+                    prodDeploy(buildConfig, deployConfig ,buildType)
                 }
             }
         }
@@ -204,8 +235,8 @@ pipeline{
     post {
          always {
              script{
-                if (configValues.build == "yes"){
-                    sendNotification(configValues, "${buildInfo.name}", "${currentBuild.number}", "${currentBuild.currentResult}")
+                if (buildConfig.build == "yes" && params.ENVIRONMENT == "UAT"){
+                    sendNotification(buildConfig, "${buildInfo.name}", "${currentBuild.number}", "${currentBuild.currentResult}")
                 }
              }
              cleanWs()

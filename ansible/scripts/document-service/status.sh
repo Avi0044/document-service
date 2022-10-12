@@ -1,1 +1,0 @@
-systemctl status document-service --no-pager

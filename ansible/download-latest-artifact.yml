@@ -1,0 +1,33 @@
+- name: "Get the latest version"
+  uri:
+    url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/maven-metadata.xml"
+    method: GET
+    user: "{{jfrogUserName}}"
+    password: "{{jfrogPassword}}"
+    return_content: yes
+    body_format: json
+  register: result
+- debug: msg="{{result.status}}"
+
+- name: "Get release version"
+  delegate_to: localhost
+  xml:
+    xmlstring: "{{result.content}}"
+    xpath: /metadata/versioning/latest
+    content: "text"
+  register: release_version
+- debug: msg="{{release_version.matches}}"
+
+- set_fact:
+    artifactVersion: "{{release_version.matches[ 0 ]['latest']}}"
+- debug: msg="{{artifactVersion}}"
+
+- name: "Download jar file from Jfrog"
+  get_url:
+    url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/{{artifactVersion}}/{{appName}}-{{artifactVersion}}.jar"
+    url_username: "{{jfrogUserName}}"
+    url_password: "{{jfrogPassword}}"
+    dest: "{{downloadDir}}/"
+    force: yes
+  register: result
+- debug: msg="{{result.status_code}}"

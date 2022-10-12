@@ -1,0 +1,13 @@
+- set_fact:
+    artifactVersion: "{{downloadArtifactVersion}}"
+- debug: msg="{{artifactVersion}}"
+
+- name: "Download jar file from Jfrog"
+  get_url:
+    url: "{{jfrogUrl}}/artifactory/{{jfrogRepository}}/{{jfrogArtifactId}}/{{appName}}/{{artifactVersion}}/{{appName}}-{{artifactVersion}}.jar"
+    url_username: "{{jfrogUserName}}"
+    url_password: "{{jfrogPassword}}"
+    dest: "{{downloadDir}}/"
+    force: yes
+  register: result
+- debug: msg="{{result.status_code}}"

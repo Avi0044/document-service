@@ -37,7 +37,7 @@
 
     - name: "Create service files(s)"
       delegate_to: localhost
-      command: "python3 {{workspace}}/ansible/helpers/service_manager.py {{workspace}} {{envType}} true"
+      command: "python3 {{workspace}}/ansible/helpers/service_manager.py {{workspace}} {{envType}} false"
       register: service_result
     - debug: msg="{{service_result.stdout_lines}}"
 

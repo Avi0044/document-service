@@ -3,7 +3,7 @@
 # Replace the place-holder < > with your project name in lowercase letters.
 #
 
-build: 'yes'
+build: 'no'
 
 appName: 'document-service'
 

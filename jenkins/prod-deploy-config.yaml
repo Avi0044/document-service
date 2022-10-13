@@ -1,4 +1,4 @@
-deploy: 'no'
+deploy: 'yes'
 
 deploymentEnvironment: 'PROD'
 

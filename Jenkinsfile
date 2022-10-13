@@ -27,7 +27,7 @@ pipeline{
                       description: "Enter the artifact version (Should be QA verified in case of PROD)",
                       defaultValue: "latest")
     }
-        
+    
     agent{
         label "pnb-maven-linux" 
     }

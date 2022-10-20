@@ -7,7 +7,7 @@
     <Appenders>
         <RollingFile name="fileApp"
                      fileName="${basePath}/document.log"
-                     filePattern="${basePath}/$${date:yyyy-MM}/proxy-%d{MM-dd-yyyy}-%i.log.gz">
+                     filePattern="${basePath}/$${date:yyyy-MM}/receipt-%d{MM-dd-yyyy}-%i.log.gz">
             <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json" maxStringLength="50000"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />

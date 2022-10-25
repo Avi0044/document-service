@@ -48,8 +48,8 @@ public class DefaultTemplateService implements TemplateService {
     @Override
     public Template updateTemplate(in.nbt.document.dto.Template template) {
         log.info("Update Template Execution Started");
-        //in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
-        in.nbt.document.model.Template templateModel = templateRepository.findByAppIdAndId( template.appId,template.getId());
+        in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
+        //in.nbt.document.model.Template templateModel = templateRepository.findByAppIdAndId( template.appId,template.getId());
         log.info("Template Fached From Database ");
         if (templateModel == null) {
             throw new NotFoundException("Template Not Found");

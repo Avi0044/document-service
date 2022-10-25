@@ -87,6 +87,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             Exception ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
         apiError.setMessage(ex.getMessage());
+        log.info("Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
 

@@ -5,7 +5,7 @@
 ansible_user=ubuntu
 ansible_port=22
 ansible_ssh_timeout=60
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q jenkins@10.1.0.67"'
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q jenkins@172.31.25.162"'
 
 [prod_server]
 10.2.11.8

@@ -43,7 +43,7 @@ mavenProfile: ''
 #
 # mavenProfile: '-DskipTests=true'
 #
-mavenExtraParams: ''
+mavenExtraParams: '-DskipTests=true'
 
 # Version upgrade is in form of major.minor.patch-buildNumber
 # below versionTypes are supported, Change as per requirement:

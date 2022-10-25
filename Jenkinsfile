@@ -84,7 +84,7 @@ pipeline{
                 }
             }
         }
-        /* stage("SonarQube code analysis"){
+        stage("SonarQube code analysis"){
             when {
                 expression {
                     buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
@@ -95,8 +95,8 @@ pipeline{
                     sonarScan(buildType, buildConfig)
                 }
             }
-        } */
-        /* stage("SonarQube quality gate"){
+        }
+        stage("SonarQube quality gate"){
             when {
                 expression {
                     buildConfig.build == "yes" && params.ENVIRONMENT == "UAT" && (env.BRANCH_NAME == "develop" || env.BRANCH_NAME == "feature/ci-cd" || (env.BRANCH_NAME =~ ".*hotfix.*").matches())
@@ -108,7 +108,7 @@ pipeline{
 					sonarQualityGate(false)
                 }
             }
-        } */
+        }
         stage("Exec Maven"){
             when {
                 expression {

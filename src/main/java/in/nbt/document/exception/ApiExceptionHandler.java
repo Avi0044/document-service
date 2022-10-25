@@ -33,6 +33,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             RuntimeException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
+        log.info("Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(NotFoundException.class)
@@ -40,6 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             NotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
         apiError.setMessage(ex.getMessage());
+        log.info("Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(TemplateException.class)
@@ -47,6 +49,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             TemplateException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
+        log.info("Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(UnAuthorizedException.class)
@@ -54,6 +57,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             UnAuthorizedException ex) {
         ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
         apiError.setMessage(ex.getMessage());
+        log.info("Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
 

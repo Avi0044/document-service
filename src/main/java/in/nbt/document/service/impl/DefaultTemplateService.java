@@ -49,6 +49,7 @@ public class DefaultTemplateService implements TemplateService {
     public Template updateTemplate(in.nbt.document.dto.Template template) {
         log.info("Update Template Execution Started");
         in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
+        log.info("Template Fached From Database ");
         if (templateModel == null) {
             throw new NotFoundException("Template Not Found");
         }
@@ -64,6 +65,7 @@ public class DefaultTemplateService implements TemplateService {
         if(template.getType()!=null){
             templateModel.setType(template.getType());
         }
+        log.info("Updating Template Into Database");
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
         log.info("Template Updated Successfully for appId : {} and templateID : {}",responseToBeReturned.getAppId(), responseToBeReturned.getId());

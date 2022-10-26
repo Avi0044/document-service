@@ -49,19 +49,19 @@ public class DefaultTemplateService implements TemplateService {
         log.info("Update Template Execution Started");
         in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
         log.info("Template Fached From Database ");
-        if (templateModel == null) {
+        if(templateModel == null){
             throw new NotFoundException("Template Not Found");
         }
-        if (template.getStatus() == null) {
+        if(template.getStatus() == null){
             log.error("Status must not be null!");
             throw new BadRequestException("Status must not be null!");
         }
         templateModel.setStatus(template.getStatus());
-        if (template.getTemplateContent() != null) {
+        if(template.getTemplateContent() != null){
             templateModel.setTemplateContent(template.getTemplateContent());
         }
         templateModel.setName(template.getName());
-        if (template.getType() != null) {
+        if(template.getType() != null){
             templateModel.setType(template.getType());
         }
         log.info("Updating Template Into Database");

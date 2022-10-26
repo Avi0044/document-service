@@ -3,7 +3,7 @@
 # Replace the place-holder < > with your project name in lowercase letters.
 #
 
-build: 'yes'
+build: 'no'
 
 appName: 'document-service'
 
@@ -43,7 +43,7 @@ mavenProfile: ''
 #
 # mavenProfile: '-DskipTests=true'
 #
-mavenExtraParams: '-DskipTests=true'
+mavenExtraParams: ''
 
 # Version upgrade is in form of major.minor.patch-buildNumber
 # below versionTypes are supported, Change as per requirement:

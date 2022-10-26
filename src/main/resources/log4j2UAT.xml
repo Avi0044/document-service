@@ -16,7 +16,7 @@
 
     </Appenders>
     <Loggers>
-        <Logger name="in.nbt" level="info" additivity="false">
+        <Logger name="in.nbt.document" level="info" additivity="false">
             <AppenderRef ref="fileApp" />
             <AppenderRef ref="LogInJSON"/>
         </Logger>

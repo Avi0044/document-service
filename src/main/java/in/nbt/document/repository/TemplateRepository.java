@@ -20,12 +20,4 @@ public interface TemplateRepository extends MongoRepository<Template, String> {
     List<Template> findAllByTypeAndAppId(String type, String appId);
 
     List<Template> findAllByStatusAndTypeAndAppId(Status status, String type, String appId);
-
-//    Template findByAppIdAndId(String appId, String id);
-
-   /* @Query("{$and :[{templateId: ?0},{appId: ?1}]}")
-    Template findByIdAndAppIds(String templateId, String appId);*/
-
-    @Query("{'id' : :#{#templateId}, 'appId' : :#{#appId}}")
-    Template findByIdAndAppIds(@Param("templateId") String templateId, @Param("appId") String appId);
 }

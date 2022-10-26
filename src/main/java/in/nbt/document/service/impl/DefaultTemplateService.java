@@ -8,7 +8,6 @@ import in.nbt.document.exception.NotFoundException;
 import in.nbt.document.mappers.TemplateMapper;
 import in.nbt.document.repository.TemplateRepository;
 import in.nbt.document.service.TemplateService;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,77 +35,70 @@ public class DefaultTemplateService implements TemplateService {
         log.info("Register Template Execution Started");
         //templateValidator.validateTemplate(template);
         in.nbt.document.model.Template templateModel = templateMapper.mapRequestToModel(template);
-        if(templateModel.getStatus()==null){
+        if (templateModel.getStatus() == null) {
             templateModel.setStatus(Status.ACTIVE);
         }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
-        log.info("Template Registered Successfully for appId : {} and templateID : {}",responseToBeReturned.getAppId(), responseToBeReturned.getId());
+        log.info("Template Registered Successfully for appId : {} and templateID : {}", responseToBeReturned.getAppId(), responseToBeReturned.getId());
         return responseToBeReturned;
     }
 
     @Override
     public Template updateTemplate(in.nbt.document.dto.Template template) {
         log.info("Update Template Execution Started");
-//        in.nbt.document.model.Template templateModel= null;
-//        try{
-//            templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
-//        }catch (Exception ex){
-//            log.info("Exception occured due to {}",ex.getMessage());
-//        }
-        in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppIds( template.getId(), template.appId);
+        in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
         log.info("Template Fached From Database ");
-        if (templateModel == null) {
+        if(templateModel == null){
             throw new NotFoundException("Template Not Found");
         }
-        if (template.getStatus() == null) {
+        if(template.getStatus() == null){
             log.error("Status must not be null!");
             throw new BadRequestException("Status must not be null!");
         }
         templateModel.setStatus(template.getStatus());
-        if (template.getTemplateContent() != null) {
+        if(template.getTemplateContent() != null){
             templateModel.setTemplateContent(template.getTemplateContent());
         }
         templateModel.setName(template.getName());
-        if(template.getType()!=null){
+        if(template.getType() != null){
             templateModel.setType(template.getType());
         }
         log.info("Updating Template Into Database");
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
-        log.info("Template Updated Successfully for appId : {} and templateID : {}",responseToBeReturned.getAppId(), responseToBeReturned.getId());
+        log.info("Template Updated Successfully for appId : {} and templateID : {}", responseToBeReturned.getAppId(), responseToBeReturned.getId());
         return responseToBeReturned;
     }
 
     @Override
-    public TemplateResponse getTemplates(String appId, Status status,String type) {
-        log.info("Get Templates Execution Started for appId : {} and Status : {}",appId,status);
+    public TemplateResponse getTemplates(String appId, Status status, String type) {
+        log.info("Get Templates Execution Started for appId : {} and Status : {}", appId, status);
         if (StringUtils.isBlank(appId)) {
             log.error("AppId id must not be null!");
             throw new BadRequestException("AppId id must not be null!");
         }
         List<in.nbt.document.model.Template> templates = new LinkedList<>();
-        if (status != null && type==null) {
+        if (status != null && type == null) {
             templates = templateRepository.findAllByStatusAndAppId(status, appId);
-        }else if(status == null && type!=null){
+        } else if (status == null && type != null) {
             templates = templateRepository.findAllByTypeAndAppId(type, appId);
-        }else if(status != null && type!=null){
-            templates = templateRepository.findAllByStatusAndTypeAndAppId(status,type, appId);
-        }
-        else {
+        } else if (status != null && type != null) {
+            templates = templateRepository.findAllByStatusAndTypeAndAppId(status, type, appId);
+        } else {
             templates = templateRepository.findAllByAppId(appId);
         }
         if (templates.isEmpty()) {
             throw new NotFoundException("No Template Found for appId : " + appId);
         }
         List<Template> listOfTemplates = templateMapper.mapTemplateModelsToResponses(templates);
-        log.info("Template list fetched Successfully for appId : {}, Total Count : {}",appId, listOfTemplates.size());
+        log.info("Template list fetched Successfully for appId : {}, Total Count : {}", appId, listOfTemplates.size());
         return new TemplateResponse(listOfTemplates);
     }
 
     @Override
     public Template getTemplateByIdAndAppId(String templateId, String appId) {
-        log.info("Get Template Execution Started for appId : {} and TemplateId : {}",appId,templateId);
+        log.info("Get Template Execution Started for appId : {} and TemplateId : {}", appId, templateId);
         if (StringUtils.isBlank(templateId) || StringUtils.isBlank(appId)) {
             log.info("Get templates for id:  {} & application id: {} ", templateId, appId);
             throw new BadRequestException("Either template id or app id is missing.");
@@ -117,7 +109,7 @@ public class DefaultTemplateService implements TemplateService {
             log.error("Template not present");
             throw new NotFoundException("Template not present");
         }
-        log.info("Template found successfully , TemplateId : {} , appId : {}", savedTemplate.getId(),savedTemplate.getAppId());
+        log.info("Template found successfully , TemplateId : {} , appId : {}", savedTemplate.getId(), savedTemplate.getAppId());
         return templateMapper.mapTemplateModelToResponse(savedTemplate);
     }
 }

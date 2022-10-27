@@ -10,7 +10,7 @@
     </parent>
     <groupId>in.paynearby</groupId>
     <artifactId>document-service</artifactId>
-    <version>0.0.1-77</version>
+    <version>0.0.1-79</version>
     <name>document-service</name>
     <description>Document Microservice to generate a document(pdf,xls,zip) based on provided templates</description>
     <properties>

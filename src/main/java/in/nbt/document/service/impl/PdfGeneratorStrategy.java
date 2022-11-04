@@ -34,7 +34,9 @@ public class PdfGeneratorStrategy implements DocumentGeneratorStrategy {
         log.info("Document Generation  Starting");
         File outputFile = null;
         try {
+            log.info("Html template processing started");
             String htmlContent = templateRenderingEngine.processTemplate(data, documentDetails);
+            log.info("Html template processing completed");
             if (StringUtils.isBlank(htmlContent)) {
                 log.error("Template might not exist or might not be accessible by any of the configured Template Resolvers");
                 throw new TemplateException("Template might not exist or might not be accessible by any of the configured Template Resolvers");

@@ -33,7 +33,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             RuntimeException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        log.error("Exception Occurred: {}",ex.getMessage());
+        log.error("'BadRequestException' Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(NotFoundException.class)
@@ -41,7 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             NotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
         apiError.setMessage(ex.getMessage());
-        log.error("Exception Occurred: {}",ex.getMessage());
+        log.error("'NotFoundException' Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(TemplateException.class)
@@ -49,7 +49,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             TemplateException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage(ex.getMessage());
-        log.error("Exception Occurred: {}",ex.getMessage());
+        log.error("'TemplateException' Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
     @ExceptionHandler(UnAuthorizedException.class)
@@ -57,7 +57,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             UnAuthorizedException ex) {
         ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
         apiError.setMessage(ex.getMessage());
-        log.error("Exception Occurred: {}",ex.getMessage());
+        log.error("'UnAuthorizedException' Exception Occurred: {}",ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
@@ -72,7 +72,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             ApiSubError error =
                     new ApiSubError(fieldError.getObjectName(),fieldError.getField(), fieldError.getCode(), fieldError.getDefaultMessage());
             errors.add(error);
-            log.error("Exception Occurred: {}",error);
+            log.error("'HandleMethodArgumentNotValid' Exception Occurred: {}",error);
         }
         for (ObjectError objectError : globalErrors) {
             ApiSubError error = new ApiSubError(null,objectError.getObjectName(), objectError.getDefaultMessage(),

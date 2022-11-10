@@ -23,6 +23,7 @@ public class PdfCreator {
             builder.run();
             return os.toByteArray();
         } catch (IOException e) {
+            LOG.error("PdfCreator createPDF Exception Occured : {}",e.getMessage());
             throw new RuntimeException(e);
         }
     }

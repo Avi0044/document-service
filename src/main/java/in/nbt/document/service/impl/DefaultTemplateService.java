@@ -32,7 +32,7 @@ public class DefaultTemplateService implements TemplateService {
 
     @Override
     public Template registerTemplate(in.nbt.document.dto.Template template) {
-        log.info("Register Template Execution Started");
+        log.info("Register Template Execution Started for appId : {}",template.getAppId());
         //templateValidator.validateTemplate(template);
         in.nbt.document.model.Template templateModel = templateMapper.mapRequestToModel(template);
         if (templateModel.getStatus() == null) {
@@ -40,13 +40,13 @@ public class DefaultTemplateService implements TemplateService {
         }
         in.nbt.document.model.Template savedTemplate = templateRepository.save(templateModel);
         Template responseToBeReturned = templateMapper.mapTemplateModelToResponse(savedTemplate);
-        log.info("Template Registered Successfully for appId : {} and templateID : {}", responseToBeReturned.getAppId(), responseToBeReturned.getId());
+        log.info("Template Registered Successfully for appId : {} With templateID : {}", responseToBeReturned.getAppId(), responseToBeReturned.getId());
         return responseToBeReturned;
     }
 
     @Override
     public Template updateTemplate(in.nbt.document.dto.Template template) {
-        log.info("Update Template Execution Started");
+        log.info("Update Template Execution Started for appId : {} ",template.getAppId());
         in.nbt.document.model.Template templateModel = templateRepository.findByIdAndAppId(template.getId(), template.appId);
         log.info("Template Fached From Database ");
         if(templateModel == null){

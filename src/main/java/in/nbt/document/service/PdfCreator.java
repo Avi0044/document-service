@@ -1,6 +1,7 @@
 package in.nbt.document.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import in.nbt.document.exception.TemplateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.helper.W3CDom;
@@ -22,8 +23,9 @@ public class PdfCreator {
             builder.toStream(os);
             builder.run();
             return os.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            LOG.error("PdfCreator createPDF Exception Occured : {}",ex.getMessage());
+            throw new TemplateException(ex.getMessage());
         }
     }
 }

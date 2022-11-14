@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Date;
 
 @Service
 public class DefaultDocumentService implements DocumentService {
@@ -56,8 +55,8 @@ public class DefaultDocumentService implements DocumentService {
         DocumentGeneratorStrategy documentGeneratorStrategy = documentStrategyFactory.findStrategy(docType);
         byte[] bytes = documentGeneratorStrategy.generateDocument(decodeBase64ToString(template.getTemplateContent().getData()), documentDetails);
         DocumentResponse documentResponse = new DocumentResponse(bytes);
-        createDocumentAudit(template,docType);
-        log.info("Document Generation Completed");
+        //createDocumentAudit(template,docType);
+        log.info("Document Generation Completed, Array Size : {} ", bytes.length);
         return documentResponse;
     }
 

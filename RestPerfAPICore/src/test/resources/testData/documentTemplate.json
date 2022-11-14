@@ -1,0 +1,44 @@
+{
+  "documentContent": [
+    {
+      "key": "retailerName",
+      "value": "Avnish"
+    },
+    {
+      "key": "retailerMobile",
+      "value": "9044126630"
+    },
+    {
+      "key": "retailerAddress",
+      "value": "Malhani Jaunpur"
+    },
+    {
+      "key": "customerMobile",
+      "value": "80901012022"
+    },
+    {
+      "key": "customerName",
+      "value": "Prabhat"
+    },
+    {
+      "key": "withdrawalAmount",
+      "value": "100"
+    },
+    {
+      "key": "availableBalance",
+      "value": "500"
+    },
+    {
+      "key": "transactionStatus",
+      "value": "Success"
+    },
+    {
+      "key": "transactionID",
+      "value": "220022312332"
+    },
+    {
+      "key": "dateTime",
+      "value": "2022 Oct 10 12:08:00 "
+    }
+  ]
+}

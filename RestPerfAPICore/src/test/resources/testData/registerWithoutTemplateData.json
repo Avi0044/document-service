@@ -1,0 +1,12 @@
+{
+  "appId": "${appid}",
+  "name": "${name}",
+  "templateContent": {
+    "contentType": "BASE64",
+    "data": null
+  },
+  "status": "ACTIVE",
+  "type": "${type}",
+  "tag": "${tag}"
+}
+

@@ -115,8 +115,8 @@ Feature: Verify the Receipt template
       | response_status_code | 201 |
 
     And Validate the performance of "DocumentCreation" service for Template
-      | thread_count    | 40 |
-      | iteration_count | 1  |
+      | thread_count    | 100|
+      | iteration_count | 3 |
 
   @DocumentTemplate404 @AEPSV2
   Scenario: Verify the Documnet Creation of Template

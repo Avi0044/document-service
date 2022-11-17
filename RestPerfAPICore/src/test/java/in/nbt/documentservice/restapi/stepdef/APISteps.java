@@ -13,6 +13,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -110,7 +111,7 @@ public class APISteps extends CucumberRunner {
     }
 
     @And("Validate the performance of {string} service for Template")
-    public void validateThePerformanceOfServiceForTemplate(String endPoint, DataTable table) {
+    public void validateThePerformanceOfServiceForTemplate(String endPoint, DataTable table) throws IOException {
         Map<String, String> hm = table.asMap(String.class, String.class);
         Set<String> keys = hm.keySet();
         for (String key : keys) {

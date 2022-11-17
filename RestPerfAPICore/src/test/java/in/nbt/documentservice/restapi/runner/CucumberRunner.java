@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 @CucumberOptions(
         features = "classpath:features",
         glue = {"in/nbt/documentservice/restapi/stepdef"},
-        tags = "@TemplateRegister",
+        tags = "@TemplateList",
         plugin = {
                 "pretty", "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:", "json:target/cucumber-reports/report.json",
                 "html:target/site/cucumber-pretty",

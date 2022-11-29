@@ -53,7 +53,7 @@ public class PdfGeneratorStrategy implements DocumentGeneratorStrategy {
             document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
             document.charset(StandardCharsets.UTF_8);
             log.info("Created well formed html content {}", document);
-            if(document.documentType()==null){
+            if(document!=null && document.documentType()==null){
                 DocumentType docType = new DocumentType(Constants.HTML, publicId, systemId);
                 document.child(0).before(docType);
             }

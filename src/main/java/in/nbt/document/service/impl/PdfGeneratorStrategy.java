@@ -1,5 +1,6 @@
 package in.nbt.document.service.impl;
 
+import in.nbt.document.constant.Constants;
 import in.nbt.document.dto.DocumentDetails;
 import in.nbt.document.dto.enums.DocType;
 import in.nbt.document.exception.TemplateException;
@@ -10,10 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.DocumentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class PdfGeneratorStrategy implements DocumentGeneratorStrategy {
@@ -41,7 +45,18 @@ public class PdfGeneratorStrategy implements DocumentGeneratorStrategy {
                 log.error("Template might not exist or might not be accessible by any of the configured Template Resolvers");
                 throw new TemplateException("Template might not exist or might not be accessible by any of the configured Template Resolvers");
             }
-            org.jsoup.nodes.Document document = Jsoup.parse(htmlContent);
+            String originalValue = Constants.DOCTYPE_HTML;
+            String updatedContent = StringUtils.replace(htmlContent, originalValue, "");
+            String publicId = Constants.PUBLIC_ID;
+            String systemId = Constants.SYSTEM_ID;
+            org.jsoup.nodes.Document document = Jsoup.parse(updatedContent, Constants.UTF_8);
+            document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+            document.charset(StandardCharsets.UTF_8);
+            log.info("Created well formed html content {}", document);
+            if(document!=null && document.documentType()==null){
+                DocumentType docType = new DocumentType(Constants.HTML, publicId, systemId);
+                document.child(0).before(docType);
+            }
             document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
             log.info("PdfGeneratorStrategy - createWellFormedHtml HTML parsing done");
 

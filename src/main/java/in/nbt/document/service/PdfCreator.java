@@ -1,6 +1,7 @@
 package in.nbt.document.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.openhtmltopdf.util.XRLog;
 import in.nbt.document.exception.TemplateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,10 @@ import java.io.*;
 public class PdfCreator {
 
     private final static Logger LOG = LogManager.getLogger(PdfCreator.class);
+
+    public PdfCreator() {
+        XRLog.setLoggingEnabled(false);
+    }
 
     public byte[] createPDF(Document document) {
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {

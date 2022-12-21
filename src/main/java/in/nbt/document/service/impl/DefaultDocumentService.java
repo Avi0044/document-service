@@ -56,7 +56,7 @@ public class DefaultDocumentService implements DocumentService {
         byte[] bytes = documentGeneratorStrategy.generateDocument(decodeBase64ToString(template.getTemplateContent().getData()), documentDetails);
         DocumentResponse documentResponse = new DocumentResponse(bytes);
         //createDocumentAudit(template,docType);
-        log.info("Document Generation Completed, Array Size : {} ", bytes.length);
+        log.info("Document Generation Completed");
         return documentResponse;
     }
 

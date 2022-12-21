@@ -52,7 +52,7 @@ public class PdfGeneratorStrategy implements DocumentGeneratorStrategy {
             org.jsoup.nodes.Document document = Jsoup.parse(updatedContent, Constants.UTF_8);
             document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
             document.charset(StandardCharsets.UTF_8);
-            log.info("Created well formed html content {}", document);
+            log.debug("Created well formed html content {}", document);
             if(document!=null && document.documentType()==null){
                 DocumentType docType = new DocumentType(Constants.HTML, publicId, systemId);
                 document.child(0).before(docType);

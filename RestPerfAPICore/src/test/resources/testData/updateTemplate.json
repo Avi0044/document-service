@@ -1,0 +1,12 @@
+{
+  "appId": "${appid}",
+  "name": "${name}",
+  "templateContent": {
+    "contentType": "BASE64",
+    "data": "${templatedata}"
+  },
+  "status": "${status}",
+  "id": "${id}",
+  "tag": "INVOICE"
+
+}

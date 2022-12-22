@@ -1,0 +1,27 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+/test output/
+/test-output/
+/test-output-thread/
+/FailedTestsScreenshots/
+/chrome/
+/edge/
+/firefox/
+test-logs/
+test-output-sequential/
+test-output-sequential/PdfReport/

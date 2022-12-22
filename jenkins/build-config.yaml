@@ -1,0 +1,64 @@
+---
+#
+# Replace the place-holder < > with your project name in lowercase letters.
+#
+
+build: 'yes'
+
+appName: 'document-service'
+
+# Deployment path where the jar/war resides.
+appPath: '/home/ubuntu/deployments'
+
+logDirectory: '/var/log/document-service'
+
+# BitBucket
+bitbucketSshUrl: 'ssh://bitbucket.org/paynearyby/document-service.git'
+repoUrl: 'git@bitbucket.org:paynearyby/document-service.git'
+
+# JFrog Artifactory specific configuration.
+
+jfrogArtifactId: 'in/paynearby' # groupId from the pom.xml, If your groupId is in.paynearby, this value should be in/paynearby
+
+# Jfrog Repository will be created as document-service-libs-snapshot-local
+jfrogRepositoryPrefix: 'document-service'
+
+# Sonarqube specific configuration.
+sonarqubeProjectKey: 'document-service-maven-uat'
+
+# Details for sending notification/email
+# This name will be used to show message in the Slack channel.
+projectName: 'document-service'
+slackChannelId: 'C02MQ4DG125'
+
+# Maven profile, Leave empty if no profile needs to be mentioned
+# else provide profile like below example
+#
+# mavenProfile: '-Dspring.profiles.active=dev'
+#
+mavenProfile: ''
+
+# Maven params, Leave empty if no params needs to be mentioned
+# else provide params like below example
+#
+# mavenProfile: '-DskipTests=true'
+#
+mavenExtraParams: '-DskipTests=true'
+
+# Version upgrade is in form of major.minor.patch-buildNumber
+# below versionTypes are supported, Change as per requirement:
+# - major
+# - minor
+# - patch
+# - build (Default value, will increment with each build)
+versionType: 'build'
+
+# Ansible related variables.
+ansible:
+  verbose: 'no'
+
+# Service name is used to map the same frontend and backend components
+# Provide the same name in corresponding frontend/backend
+serviceName: document-service
+# provide component type: [ frontend, backend , all]
+componentType: backend

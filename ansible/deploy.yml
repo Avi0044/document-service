@@ -1,0 +1,113 @@
+---
+- name: "Running CD for {{appName}}"
+  hosts: "{{envType}}_server"
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+    ansible_python_interpreter: /usr/bin/python3
+    jfrogPassword: "{{ lookup('aws_secret', 'Optimus-prime/uat/jfrogAnsibleVault', region='ap-south-1') }}"
+
+  tasks:
+    - name: "Set directories vars"
+      set_fact:
+        downloadDir: "/tmp/download/{{appName}}"
+        backupDir: "/tmp/backup"
+        deploymentDir: "{{appPath}}/{{appName}}"
+
+    - name: "Create download directory if not exists"
+      file:
+        path: "{{downloadDir}}"
+        state: directory
+        mode: "0755"
+
+    - name: "Create Backup directory if not exists"
+      file:
+        path: "{{backupDir}}"
+        state: directory
+        mode: "0755"
+
+    - name: "Create logs directory if not exists"
+      become: yes
+      become_user: root
+      file:
+        path: "{{logDirectory}}"
+        state: directory
+        mode: "0755"
+        owner: "ubuntu"
+        group: "ubuntu"
+
+    - name: "Create service files(s)"
+      delegate_to: localhost
+      command: "python3 {{workspace}}/ansible/helpers/service_manager.py {{workspace}} {{envType}} false"
+      register: service_result
+    - debug: msg="{{service_result.stdout_lines}}"
+
+    - name: "Copy service template to location"
+      become: yes
+      become_user: root
+      copy:
+        src: "{{workspace}}/ansible/services/{{appName}}.service"
+        dest: "/etc/systemd/system/"
+
+    - name: "Enable service"
+      become: yes
+      become_user: root
+      systemd:
+        name: "{{appName}}"
+        enabled: yes
+
+    - name: "Daemon reload"
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: yes
+
+    # Download jar artifact from Jfrog based on env
+    - name: "Download latest Artifact"
+      include_tasks: "download-latest-artifact.yml"
+      when: downloadArtifactVersion == "latest"
+
+    - name: "Download Specific Artifact"
+      include_tasks: "download-specific-artifact.yml"
+      when: downloadArtifactVersion != "latest"
+
+    - name: "Check previous deployment exists or not"
+      stat:
+        path: "{{deploymentDir}}/{{appName}}.jar"
+      register: previous_deployment_stat
+
+    - name: "Stop {{appName}} service(s)"
+      become: yes
+      become_user: root
+      systemd:
+        state: stopped
+        name: "{{appName}}"
+      register: stop_status
+      when: previous_deployment_stat.stat.exists
+
+    - name: "Backup Old files"
+      shell: "mv {{deploymentDir}}/{{appName}}.jar {{backupDir}}/"
+      register: bkp
+      when: previous_deployment_stat.stat.exists
+
+    - name: "Create deployment directory if not exists"
+      file:
+        path: "{{deploymentDir}}"
+        state: directory
+        mode: "0755"
+
+    - name: "Copy downloaded jar to deployment location"
+      command: "cp {{downloadDir}}/{{appName}}-{{artifactVersion}}.jar {{deploymentDir}}/{{appName}}.jar"
+      register: copy_status
+
+    - name: "Start {{appName}} service(s)"
+      become: yes
+      become_user: root
+      systemd:
+        state: started
+        name: "{{appName}}"
+      register: start_status
+
+    - name: "Delete download directory"
+      file:
+        path: "/tmp/download/{{appName}}"
+        state: absent

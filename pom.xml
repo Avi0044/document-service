@@ -14,7 +14,7 @@
     <name>document-service</name>
     <description>Document Microservice to generate a document(pdf,xls,zip) based on provided templates</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>22</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <log4j2.version>2.17.0</log4j2.version>
     </properties>
@@ -205,7 +205,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+               <!-- <version>3.9.9</version>-->
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -213,7 +213,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.24</version>
+                            <version>1.18.30</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>

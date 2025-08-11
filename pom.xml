@@ -14,7 +14,7 @@
     <name>document-service</name>
     <description>Document Microservice to generate a document(pdf,xls,zip) based on provided templates</description>
     <properties>
-        <java.version>22</java.version>
+        <java.version>21</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <log4j2.version>2.17.0</log4j2.version>
     </properties>

@@ -225,7 +225,7 @@
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
+   <!-- <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
             <name>paynearby-artifactory-primary-0-snapshots</name>
@@ -272,5 +272,5 @@
             </releases>
             <name>document-service-libs-snapshot</name>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
 </project>

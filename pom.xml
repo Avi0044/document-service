@@ -8,7 +8,6 @@
         <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <packaging>war</packaging>
     <groupId>in.paynearby</groupId>
     <artifactId>document-service</artifactId>
     <version>0.0.1-97</version>
